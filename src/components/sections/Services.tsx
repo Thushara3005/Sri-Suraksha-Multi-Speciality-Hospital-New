@@ -10,26 +10,26 @@ const services = [
   {
     title: "General Medicine",
     description:
-      "Comprehensive health evaluations, diagnosis, and treatment for a wide range of medical conditions by experienced physicians with 12+ years of expertise.",
+      "Comprehensive health evaluations, diabetes management, critical care, diagnosis and treatment by Dr. Ramesh Reddy (MBBS, MD - General Physician, Diabetologist & Critical Care) with 12+ years of expertise.",
     image: "/images/service-general.png",
     icon: Stethoscope,
     features: [
       "Health Checkups",
-      "Chronic Disease Management",
-      "Fever & Infection Treatment",
+      "Diabetes Management",
+      "Critical Care",
       "Preventive Care",
     ],
   },
   {
     title: "Gynecology",
     description:
-      "Expert women's healthcare services including prenatal care, menstrual health management, fertility consultations, and comprehensive gynecological treatments.",
+      "Expert women's healthcare, infertility treatment, laparoscopic surgery, prenatal care, and comprehensive gynecological treatments by Dr. Triveni Reddy (MBBS, MS Obs & Gyn).",
     image: "/images/service-gynecology.png",
     icon: Heart,
     features: [
       "Prenatal & Antenatal Care",
-      "Menstrual Health",
-      "Fertility Consultations",
+      "Infertility Treatment",
+      "Laparoscopic Surgery",
       "Women's Wellness",
     ],
   },

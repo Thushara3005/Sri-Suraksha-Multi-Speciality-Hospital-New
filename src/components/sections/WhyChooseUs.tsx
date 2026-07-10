@@ -19,7 +19,7 @@ const features = [
     icon: Award,
     title: "12+ Years of Experience",
     description:
-      "Our experienced medical team brings over 12 years of clinical expertise in General Medicine and Gynecology, handling cases with excellent outcomes.",
+      "Dr. Ramesh Reddy and Dr. Triveni Reddy bring over 12 years of clinical expertise in General Medicine, Diabetology, Critical Care and Gynecology, handling cases with excellent outcomes.",
   },
   {
     icon: Microscope,
@@ -37,13 +37,13 @@ const features = [
     icon: HeartPulse,
     title: "Comprehensive Care",
     description:
-      "From General Medicine consultations to specialized Gynecology care and diagnostic services, we provide complete healthcare under one roof.",
+      "From General Medicine consultations to specialized Gynecology, Infertility Treatment and Laparoscopic Surgery, we provide complete healthcare under one roof.",
   },
   {
     icon: Users,
     title: "Expert Medical Team",
     description:
-      "A dedicated team of experienced specialists in General Medicine and Gynecology, working together for your well-being.",
+      "Dr. Ramesh Reddy (General Physician, Diabetologist & Critical Care) and Dr. Triveni Reddy (Gynecologist, Infertility & Laparoscopic Surgeon), working together for your well-being.",
   },
   {
     icon: Clock,

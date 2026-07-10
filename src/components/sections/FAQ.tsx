@@ -43,7 +43,7 @@ const faqs = [
   {
     question: "What types of doctors are available at Sri Suraksha?",
     answer:
-      "We have experienced specialists in General Medicine and Gynecology, each with over 12 years of clinical experience. Our team provides comprehensive care supported by our on-site Diagnostics Laboratory.",
+      "We have Dr. Ramesh Reddy (MBBS, MD - General Physician, Diabetologist & Critical Care) and Dr. Triveni Reddy (MBBS, MS Obs & Gyn - Infertility & Laparoscopic Surgeon), each with over 12 years of clinical experience.",
   },
 ];
 

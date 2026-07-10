@@ -89,17 +89,17 @@ export default function About() {
 
             <p className="text-gray-600 text-sm sm:text-base lg:text-lg leading-relaxed">
               Sri Suraksha Multi Speciality Hospital is a leading healthcare
-              facility in Metpally, Telangana, with a team of experienced
-              specialists bringing over 12 years of clinical expertise. We
-              specialize in providing comprehensive medical services including
-              General Medicine, Gynecology, and Diagnostics Laboratory with a
-              patient-first approach.
+              facility in Metpally, Telangana, led by Dr. Ramesh Reddy (General
+              Physician, Diabetologist & Critical Care) and Dr. Triveni Reddy
+              (Gynecologist, Infertility & Laparoscopic Surgeon), bringing over
+              12 years of clinical expertise.
             </p>
 
             <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-              Our team of dedicated doctors provides expert care in General
-              Medicine and Gynecology, supported by a fully equipped Diagnostics
-              Laboratory. We are committed to delivering quality healthcare
+              Dr. Ramesh Reddy provides expert care in General Medicine, Diabetes
+              Management and Critical Care, while Dr. Triveni Reddy specializes
+              in Gynecology, Infertility Treatment and Laparoscopic Surgery,
+              supported by a fully equipped Diagnostics Laboratory. We are committed to delivering quality healthcare
               accessible to the community of Metpally and surrounding areas,
               available 24 hours for emergencies.
             </p>

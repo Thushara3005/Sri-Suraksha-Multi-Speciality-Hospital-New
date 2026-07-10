@@ -83,8 +83,9 @@ export default function Testimonials() {
 
             <p className="text-gray-600 text-sm sm:text-base lg:text-lg leading-relaxed">
               With a{" "}
-              <span className="font-semibold text-teal-700">bed capacity of over 220 beds</span>, modern medical infrastructure, and experienced healthcare professionals, we offer comprehensive services in{" "}
-              <span className="font-semibold text-teal-700">General Medicine, Gynecology, and Diagnostics Laboratory</span>. Our hospital also provides{" "}
+              <span className="font-semibold text-teal-700">bed capacity of over 220 beds</span>, modern medical infrastructure, and experienced healthcare professionals including{" "}
+              <span className="font-semibold text-teal-700">Dr. Ramesh Reddy (General Physician, Diabetologist & Critical Care)</span> and{" "}
+              <span className="font-semibold text-teal-700">Dr. Triveni Reddy (Gynecologist, Infertility & Laparoscopic Surgeon)</span>, we offer comprehensive services. Our hospital also provides{" "}
               <span className="font-semibold text-teal-700">24/7 emergency care</span>, ensuring timely treatment whenever you need it.
             </p>
 
