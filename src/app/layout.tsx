@@ -63,10 +63,25 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Remove browser extension injected attributes before React hydrates
-              document.querySelectorAll('[fdprocessedid]').forEach(function(el) {
-                el.removeAttribute('fdprocessedid');
-              });
+              (function(){
+                function clean(){
+                  var els=document.querySelectorAll('[fdprocessedid]');
+                  for(var i=0;i<els.length;i++) els[i].removeAttribute('fdprocessedid');
+                }
+                clean();
+                var mo=new MutationObserver(clean);
+                if(document.documentElement){
+                  mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['fdprocessedid']});
+                }else{
+                  document.addEventListener('DOMContentLoaded',function(){
+                    mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['fdprocessedid']});
+                  });
+                }
+                var iv=setInterval(function(){
+                  clean();
+                  if(document.readyState==='complete'){clearInterval(iv);mo.disconnect();}
+                },10);
+              })();
             `,
           }}
         />
