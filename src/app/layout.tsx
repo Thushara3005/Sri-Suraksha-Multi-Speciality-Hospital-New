@@ -60,6 +60,16 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/logo.png" />
         <link rel="preload" as="image" href="/images/hero-bg.png" />
         <link rel="preload" as="image" href="/images/hero-doctor.png" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Remove browser extension injected attributes before React hydrates
+              document.querySelectorAll('[fdprocessedid]').forEach(function(el) {
+                el.removeAttribute('fdprocessedid');
+              });
+            `,
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} ${openSans.variable} antialiased bg-background text-foreground font-[family-name:var(--font-open-sans)]`}
