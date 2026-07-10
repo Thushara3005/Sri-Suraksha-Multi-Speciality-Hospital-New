@@ -197,9 +197,9 @@ export default function Hero() {
               <div className="relative rounded-full overflow-hidden border-4 border-white/20 shadow-2xl shadow-teal-900/50 aspect-[3/4] mx-auto" style={{ transform: "translateZ(0px)" }}>
                 <Image
                   src="/images/hero-doctor.png"
-                  alt="Doctors at Sri Suraksha Multi Speciality Hospital, Metpally"
+                  alt="Sri Suraksha Multi Speciality Hospital Building, Metpally"
                   fill
-                  className="object-cover object-top"
+                  className="object-cover object-center"
                   priority
                 />
                 {/* Subtle gradient overlay at bottom */}
