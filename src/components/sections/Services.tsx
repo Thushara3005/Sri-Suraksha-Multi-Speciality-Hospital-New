@@ -24,7 +24,7 @@ const services = [
     title: "Gynecology",
     description:
       "Expert women's healthcare services including prenatal care, menstrual health management, fertility consultations, and comprehensive gynecological treatments.",
-    image: "/images/facility2.png",
+    image: "/images/service-gynecology.png",
     icon: Heart,
     features: [
       "Prenatal & Antenatal Care",
