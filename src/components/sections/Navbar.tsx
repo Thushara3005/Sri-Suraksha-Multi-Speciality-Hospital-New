@@ -235,6 +235,7 @@ export default function Navbar() {
               onClick={() => setIsMobileOpen(!isMobileOpen)}
               className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
               aria-label="Toggle menu"
+              suppressHydrationWarning
             >
               {isMobileOpen ? (
                 <X className="w-6 h-6 text-gray-700" />

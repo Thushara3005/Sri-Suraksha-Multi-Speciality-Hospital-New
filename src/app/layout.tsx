@@ -56,6 +56,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preload" as="image" href="/logo.png" />
+        <link rel="preload" as="image" href="/images/hero-bg.png" />
+        <link rel="preload" as="image" href="/images/hero-doctor.png" />
+      </head>
       <body
         className={`${inter.variable} ${openSans.variable} antialiased bg-background text-foreground font-[family-name:var(--font-open-sans)]`}
         suppressHydrationWarning

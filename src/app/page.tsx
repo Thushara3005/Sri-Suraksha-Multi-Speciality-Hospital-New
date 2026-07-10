@@ -21,22 +21,22 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
-    // Fast progress: increment quickly to simulate load
+    // Quick progress: reach 100% in ~400ms
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
           return 100;
         }
-        return prev + 8;
+        return prev + 10;
       });
     }, 40);
 
-    // Complete quickly - 1200ms total
+    // Complete quickly - 800ms total
     const completeTimer = setTimeout(() => {
       setShow(false);
-      setTimeout(onComplete, 400);
-    }, 1200);
+      setTimeout(onComplete, 300);
+    }, 800);
 
     return () => {
       clearInterval(timer);
@@ -44,23 +44,21 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
     };
   }, [onComplete]);
 
-  const isReady = progress >= 100;
-
   return (
     <AnimatePresence>
       {show && (
         <motion.div
           className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center"
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.3 }}
         >
-          <div className="relative z-10 flex flex-col items-center gap-4 sm:gap-5">
+          <div className="relative z-10 flex flex-col items-center gap-3 sm:gap-4">
             {/* Logo */}
             <motion.div
               className="relative"
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <Image
                 src="/logo.png"
@@ -75,9 +73,9 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
             {/* Tagline */}
             <motion.p
               className="text-teal-600/70 text-xs sm:text-sm font-medium tracking-wider uppercase"
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
+              transition={{ duration: 0.3, delay: 0.15 }}
             >
               Multi Speciality Hospital in Metpally
             </motion.p>
@@ -87,10 +85,10 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
               className="w-40 sm:w-56 h-1 bg-teal-100 rounded-full overflow-hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, delay: 0.3 }}
+              transition={{ duration: 0.2, delay: 0.2 }}
             >
               <div
-                className="h-full bg-gradient-to-r from-teal-400 to-teal-600 rounded-full transition-all duration-150 ease-out"
+                className="h-full bg-gradient-to-r from-teal-400 to-teal-600 rounded-full transition-all duration-100 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </motion.div>
@@ -113,7 +111,7 @@ export default function Home() {
       {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
       <div
         className={`min-h-screen flex flex-col ${
-          isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-500"
+          isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-300"
         }`}
         suppressHydrationWarning
       >
