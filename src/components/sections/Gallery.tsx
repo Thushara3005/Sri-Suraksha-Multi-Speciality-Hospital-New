@@ -40,6 +40,22 @@ interface GalleryItem {
 
 const galleryImages: GalleryItem[] = [
   {
+    src: "/images/doctor-ramesh.png",
+    alt: "Dr Ramesh Reddy",
+    category: "doctors",
+    info: "General Physician | 12+ Years Experience",
+    icon: Stethoscope,
+    name: "Dr Ramesh Reddy",
+    specialty: "General Physician & Diabetologist",
+    qualifications: "MBBS, MD (General Physician, Diabetologist & Critical Care)",
+    experience: "12+ Years Experience",
+    description:
+      "Dr Ramesh Reddy is an experienced General Physician and Diabetologist specializing in comprehensive healthcare including diabetes management, critical care, chronic disease management, preventive care, and emergency services with over 12 years of clinical expertise.",
+    availability: "Available 24/7",
+    location: "Sri Suraksha Multi Speciality Hospital, Metpally",
+    rating: 4.1,
+  },
+  {
     src: "/images/doctor2.png",
     alt: "Gynecology Specialist",
     category: "doctors",
