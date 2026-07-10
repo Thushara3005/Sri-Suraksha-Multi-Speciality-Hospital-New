@@ -58,6 +58,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${openSans.variable} antialiased bg-background text-foreground font-[family-name:var(--font-open-sans)]`}
+        suppressHydrationWarning
       >
         {children}
         <Toaster />
