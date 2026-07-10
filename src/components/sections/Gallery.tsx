@@ -71,6 +71,16 @@ const galleryImages: GalleryItem[] = [
     location: "Sri Suraksha Multi Speciality Hospital, Metpally",
     rating: 4.1,
   },
+  {
+    src: "/images/waiting-room.png",
+    alt: "Waiting Room",
+    category: "hospital",
+    info: "Patient Waiting Hall",
+    icon: Building2,
+    name: "Waiting Room",
+    description: "Comfortable and well-lit waiting room for patients and attenders at Sri Suraksha Multi Speciality Hospital, Metpally.",
+    location: "Sri Suraksha Multi Speciality Hospital, Metpally",
+  },
 ];
 
 const categories = [
