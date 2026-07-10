@@ -91,6 +91,16 @@ const galleryImages: GalleryItem[] = [
     description: "Clean and well-maintained inpatient ward with multiple beds, privacy curtains, and 24/7 nursing care for patients requiring hospitalization and recovery.",
     location: "Sri Suraksha Multi Speciality Hospital, Metpally",
   },
+  {
+    src: "/images/hospital-ward2.png",
+    alt: "Patient Care Ward",
+    category: "hospital",
+    info: "Patient Ward - Recovery",
+    icon: Building2,
+    name: "Patient Care Ward",
+    description: "Spacious patient care ward with natural lighting, medical equipment including IV stands, providing a comfortable environment for patient recovery and treatment.",
+    location: "Sri Suraksha Multi Speciality Hospital, Metpally",
+  },
 ];
 
 const categories = [
