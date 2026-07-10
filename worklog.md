@@ -57,3 +57,24 @@ Stage Summary:
 - Hydration warning suppressed on Navbar mobile toggle
 - Zero console errors in browser verification
 
+---
+Task ID: 3
+Agent: Main Agent
+Task: Replace hero doctor image (man) with woman doctor using AI image editing
+
+Work Log:
+- User uploaded 2 images: screenshot of current hero (man in plaid - reference) and photo of woman doctor in pink
+- Used VLM to identify: image 1 = man in plaid (remove), image 2 = woman in pink with stethoscope (use)
+- Original woman photo had complex background unsuitable for circular hero frame
+- Used z-ai image-edit SDK to create professional portrait: clean white background, head-and-shoulders crop, studio lighting, preserving same person/clothing/accessories
+- Output size: 864x1152 (portrait), saved to public/images/hero-doctor.png (replacing man's photo)
+- VLM verification confirms: woman in pink, stethoscope, black glasses, clean white background, suitable for circular frame
+- Agent browser verification: all 5 checks pass (woman visible, pink clothing, white background, all 4 badges present, teal gradient intact)
+- No code changes needed - Hero.tsx already references /images/hero-doctor.png
+
+Stage Summary:
+- hero-doctor.png replaced with AI-edited professional portrait of woman doctor
+- Clean white background, proper crop for circular frame
+- All floating badges (Easy Booking, 4.9 Rating, Trusted Care, 24/7 Available) preserved
+- No layout, color, or design changes — only the doctor photo inside the circular frame changed
+
