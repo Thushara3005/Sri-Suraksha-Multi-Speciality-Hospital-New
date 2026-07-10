@@ -89,19 +89,20 @@ export default function About() {
 
             <p className="text-gray-600 text-sm sm:text-base lg:text-lg leading-relaxed">
               Sri Suraksha Multi Speciality Hospital is a leading healthcare
-              facility in Metpally, Telangana, led by Dr. Ramesh Reddy (General
-              Physician, Diabetologist & Critical Care) and Dr. Triveni Reddy
-              (Gynecologist, Infertility & Laparoscopic Surgeon), bringing over
-              12 years of clinical expertise.
+              facility in Metpally, Telangana, led by{" "}
+              <span className="font-bold text-teal-700">Dr. Ramesh Reddy</span>
+              <span className="text-gray-500 text-xs sm:text-sm">(General Physician, Diabetologist & Critical Care)</span>{" "}
+              and{" "}
+              <span className="font-bold text-teal-700">Dr. Triveni Reddy</span>
+              <span className="text-gray-500 text-xs sm:text-sm">(Gynecologist, Infertility & Laparoscopic Surgeon)</span>
+              , bringing over 12 years of clinical expertise.
             </p>
 
             <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-              Dr. Ramesh Reddy provides expert care in General Medicine, Diabetes
-              Management and Critical Care, while Dr. Triveni Reddy specializes
-              in Gynecology, Infertility Treatment and Laparoscopic Surgery,
-              supported by a fully equipped Diagnostics Laboratory. We are committed to delivering quality healthcare
-              accessible to the community of Metpally and surrounding areas,
-              available 24 hours for emergencies.
+              <span className="font-bold text-teal-700">Dr. Ramesh Reddy</span>{" "}
+              provides expert care in General Medicine, Diabetes Management and Critical Care, while{" "}
+              <span className="font-bold text-teal-700">Dr. Triveni Reddy</span>{" "}
+              specializes in Gynecology, Infertility Treatment and Laparoscopic Surgery, supported by a fully equipped Diagnostics Laboratory. We are committed to delivering quality healthcare accessible to the community of Metpally and surrounding areas, available 24 hours for emergencies.
             </p>
 
             {/* Feature list with 3D hover items */}
