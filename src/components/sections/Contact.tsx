@@ -86,10 +86,10 @@ export default function Contact() {
                   <div>
                     <p className="font-semibold text-xs sm:text-sm">Call Us</p>
                     <a
-                      href="tel:09014759130"
+                      href="tel:+919014759130"
                       className="text-teal-200 hover:text-white transition-colors text-sm"
                     >
-                      09014759130
+                      9014759130
                     </a>
                   </div>
                 </div>
