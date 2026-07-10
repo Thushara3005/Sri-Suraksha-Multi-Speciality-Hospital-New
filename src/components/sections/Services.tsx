@@ -37,7 +37,7 @@ const services = [
     title: "Diagnostics Laboratory",
     description:
       "State-of-the-art diagnostic laboratory offering a full range of blood tests, imaging, and pathology services with accurate and timely results.",
-    image: "/images/facility1.png",
+    image: "/images/service-diagnostics.png",
     icon: Microscope,
     features: [
       "Blood Tests & Pathology",
