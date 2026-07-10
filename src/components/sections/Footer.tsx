@@ -5,9 +5,6 @@ import {
   MapPin,
   Phone,
   Clock,
-  Facebook,
-  Instagram,
-  Youtube,
   ArrowUp,
   Heart,
 } from "lucide-react";
@@ -58,35 +55,7 @@ export default function Footer() {
               Gynecology, Diagnostics Laboratory, and 24/7 emergency
               healthcare services.
             </p>
-            <div className="flex items-center gap-2 sm:gap-3">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-800 hover:bg-teal-600 rounded-lg flex items-center justify-center transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-800 hover:bg-teal-600 rounded-lg flex items-center justify-center transition-colors"
-                aria-label="YouTube"
-              >
-                <Youtube className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-800 hover:bg-teal-600 rounded-lg flex items-center justify-center transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-            </div>
+
           </div>
 
           {/* Quick Links */}
