@@ -4,7 +4,6 @@ import Image from "next/image";
 import {
   MapPin,
   Phone,
-  Mail,
   Clock,
   Facebook,
   Instagram,
@@ -124,21 +123,12 @@ export default function Footer() {
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-teal-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <a
-                    href="tel:+918977507427"
+                    href="tel:+917947118058"
                     className="hover:text-teal-400 transition-colors text-xs sm:text-sm"
                   >
-                    +91 89775 07427
+                    +91 79471 18058
                   </a>
                 </div>
-              </div>
-              <div className="flex items-start gap-2 sm:gap-3">
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-teal-400 flex-shrink-0 mt-0.5" />
-                <a
-                  href="mailto:sharvexhealthcare@gmail.com"
-                  className="hover:text-teal-400 transition-colors text-xs sm:text-sm"
-                >
-                  sharvexhealthcare@gmail.com
-                </a>
               </div>
               <div className="flex items-start gap-2 sm:gap-3">
                 <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-teal-400 flex-shrink-0 mt-0.5" />

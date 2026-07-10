@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { MapPin, Phone, Clock, Mail } from "lucide-react";
+import { MapPin, Phone, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,7 +20,7 @@ export default function Contact() {
     const message = formData.get("message") as string;
 
     const whatsappMessage = `Hi, I'd like to book an appointment.\n\nName: ${name}\nPhone: ${phone}\nMessage: ${message}`;
-    const whatsappUrl = `https://wa.me/918977507427?text=${encodeURIComponent(whatsappMessage)}`;
+    const whatsappUrl = `https://wa.me/917947118058?text=${encodeURIComponent(whatsappMessage)}`;
     window.open(whatsappUrl, "_blank");
   };
 
@@ -86,25 +86,10 @@ export default function Contact() {
                   <div>
                     <p className="font-semibold text-xs sm:text-sm">Call Us</p>
                     <a
-                      href="tel:+918977507427"
+                      href="tel:+917947118058"
                       className="text-teal-200 hover:text-white transition-colors text-sm"
                     >
-                      +91 89775 07427
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-xs sm:text-sm">Email Us</p>
-                    <a
-                      href="mailto:sharvexhealthcare@gmail.com"
-                      className="text-teal-200 hover:text-white transition-colors text-xs sm:text-sm"
-                    >
-                      sharvexhealthcare@gmail.com
+                      +91 79471 18058
                     </a>
                   </div>
                 </div>
@@ -140,7 +125,7 @@ export default function Contact() {
 
               {/* WhatsApp Button */}
               <motion.a
-                href="https://wa.me/918977507427"
+                href="https://wa.me/917947118058"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 sm:mt-8 w-full inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white rounded-xl py-2.5 sm:py-3 px-4 sm:px-6 font-semibold transition-colors shadow-lg text-sm sm:text-base"
@@ -194,18 +179,6 @@ export default function Contact() {
                     className="rounded-xl border-gray-200 focus:border-teal-500 focus:ring-teal-500 text-sm"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-                  Email Address
-                </label>
-                <Input
-                  name="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  className="rounded-xl border-gray-200 focus:border-teal-500 focus:ring-teal-500 text-sm"
-                />
               </div>
 
               <div>

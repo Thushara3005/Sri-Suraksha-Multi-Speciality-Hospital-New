@@ -100,11 +100,11 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4 sm:gap-6">
             <a
-              href="tel:+918977507427"
+              href="tel:+917947118058"
               className="flex items-center gap-1.5 sm:gap-2 hover:text-teal-200 transition-colors"
             >
               <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              +91 89775 07427
+              +91 79471 18058
             </a>
             <span className="text-teal-300">|</span>
             <span className="text-teal-100">

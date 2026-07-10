@@ -23,12 +23,12 @@ const faqs = [
   {
     question: "Do I need to make an appointment before my visit?",
     answer:
-      "It is preferable to book an appointment in advance to minimize wait times. However, walk-ins are also accommodated. In case of emergency, please visit directly or call our reception at +91 89775 07427.",
+      "It is preferable to book an appointment in advance to minimize wait times. However, walk-ins are also accommodated. In case of emergency, please visit directly or call our reception at +91 79471 18058.",
   },
   {
     question: "How can I contact the Hospital in case of emergency?",
     answer:
-      "Our hospital is open 24 hours, 7 days a week with emergency services available around the clock. You can call our reception at +91 89775 07427 anytime. Walk-in emergencies are immediately attended to.",
+      "Our hospital is open 24 hours, 7 days a week with emergency services available around the clock. You can call our reception at +91 79471 18058 anytime. Walk-in emergencies are immediately attended to.",
   },
   {
     question: "Are Lab and Diagnostics services available at your hospital?",
@@ -38,7 +38,7 @@ const faqs = [
   {
     question: "Can I schedule a video consultation?",
     answer:
-      "Yes, we offer teleconsultation services. Please contact us via WhatsApp or email to schedule a video consultation. Our team will coordinate a convenient time for your virtual appointment.",
+      "Yes, we offer teleconsultation services. Please contact us via WhatsApp to schedule a video consultation. Our team will coordinate a convenient time for your virtual appointment.",
   },
   {
     question: "What types of doctors are available at Sri Suraksha?",

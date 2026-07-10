@@ -97,7 +97,7 @@ export default function CTASection() {
             </motion.div>
 
             <motion.a
-              href="tel:+918977507427"
+              href="tel:+917947118058"
               className="inline-flex items-center gap-2 text-white hover:text-teal-200 font-semibold text-base sm:text-lg transition-colors"
               whileHover={{ scale: 1.05, x: 3 }}
               whileTap={{ scale: 0.98 }}
@@ -108,7 +108,7 @@ export default function CTASection() {
               >
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.div>
-              +91 89775 07427
+              +91 79471 18058
             </motion.a>
           </div>
         </motion.div>
