@@ -124,7 +124,7 @@ export default function Footer() {
             {/* Map embed placeholder */}
             <div className="rounded-xl overflow-hidden border border-gray-700 h-32 sm:h-40 bg-gray-800 flex items-center justify-center">
               <a
-                href="https://maps.google.com/?q=Metpally+Jagtial+Telangana"
+                href="https://maps.google.com/?q=Sri+Suraksha+Multi+Speciality+Hospital+Metpally+Main+Rd+near+Old+Bus+Stop+Metpally+Telangana+505325"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-teal-400 hover:text-teal-300 transition-colors text-xs sm:text-sm"
