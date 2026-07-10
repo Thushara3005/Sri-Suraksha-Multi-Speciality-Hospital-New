@@ -149,9 +149,9 @@ export default function Navbar() {
               <Image
                 src="/logo.png"
                 alt="Sri Suraksha Multi Speciality Hospital"
-                width={180}
-                height={50}
-                className="h-9 sm:h-10 lg:h-12 w-auto object-contain"
+                width={200}
+                height={200}
+                className="h-10 sm:h-11 lg:h-14 w-10 sm:w-11 lg:w-14 object-contain"
                 priority
               />
             </a>

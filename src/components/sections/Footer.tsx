@@ -48,9 +48,9 @@ export default function Footer() {
               <Image
                 src="/logo.png"
                 alt="Sri Suraksha Multi Speciality Hospital"
-                width={160}
-                height={45}
-                className="h-8 sm:h-10 w-auto brightness-0 invert"
+                width={200}
+                height={200}
+                className="h-10 sm:h-12 w-10 sm:w-12 object-contain brightness-0 invert"
               />
             </div>
             <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">

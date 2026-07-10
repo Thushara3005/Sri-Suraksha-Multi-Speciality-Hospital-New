@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Sri Suraksha Multi Speciality Hospital" }],
   icons: {
-    icon: "/logo.png",
+    icon: "/icon.png",
   },
   openGraph: {
     title: "Sri Suraksha Multi Speciality Hospital | Metpally",
