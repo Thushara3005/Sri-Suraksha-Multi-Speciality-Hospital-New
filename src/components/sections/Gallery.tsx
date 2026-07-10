@@ -81,6 +81,16 @@ const galleryImages: GalleryItem[] = [
     description: "Comfortable and well-lit waiting area with spacious seating arrangements for patients and attendants at Sri Suraksha Hospital.",
     location: "Sri Suraksha Multi Speciality Hospital, Metpally",
   },
+  {
+    src: "/images/hospital-ward1.png",
+    alt: "Inpatient Ward",
+    category: "hospital",
+    info: "Patient Ward - Inpatient Care",
+    icon: Building2,
+    name: "Inpatient Ward",
+    description: "Clean and well-maintained inpatient ward with multiple beds, privacy curtains, and 24/7 nursing care for patients requiring hospitalization and recovery.",
+    location: "Sri Suraksha Multi Speciality Hospital, Metpally",
+  },
 ];
 
 const categories = [
