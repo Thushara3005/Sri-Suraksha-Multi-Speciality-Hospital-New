@@ -40,22 +40,6 @@ interface GalleryItem {
 
 const galleryImages: GalleryItem[] = [
   {
-    src: "/images/doctor1.png",
-    alt: "General Medicine Specialist",
-    category: "doctors",
-    info: "General Medicine | 12+ Years Experience",
-    icon: Stethoscope,
-    name: "General Medicine Specialist",
-    specialty: "General Medicine",
-    qualifications: "MBBS, MD (General Medicine)",
-    experience: "12+ Years Experience",
-    description:
-      "Our experienced General Medicine physician provides comprehensive healthcare including consultations, chronic disease management, preventive care, and emergency services with over 12 years of clinical expertise.",
-    availability: "Available 24/7",
-    location: "Sri Suraksha Multi Speciality Hospital, Metpally",
-    rating: 4.1,
-  },
-  {
     src: "/images/doctor2.png",
     alt: "Gynecology Specialist",
     category: "doctors",
