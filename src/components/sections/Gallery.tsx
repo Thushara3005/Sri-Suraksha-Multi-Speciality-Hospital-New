@@ -430,23 +430,15 @@ export default function Gallery() {
                     </div>
                   )}
 
-                  {/* CTA Buttons */}
-                  <div className="mt-5 sm:mt-7 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+                  {/* CTA Button */}
+                  <div className="mt-5 sm:mt-7">
                     <a
-                      href="tel:+919876543210"
+                      href="#contact"
                       className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-teal-600 text-white rounded-xl text-sm font-semibold hover:bg-teal-700 transition-colors shadow-lg shadow-teal-200"
-                    >
-                      <Phone className="w-4 h-4" />
-                      Book Appointment
-                    </a>
-                    <a
-                      href="https://wa.me/919876543210"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white text-teal-700 border-2 border-teal-200 rounded-xl text-sm font-semibold hover:bg-teal-50 hover:border-teal-300 transition-colors"
+                      onClick={() => setSelectedItem(null)}
                     >
                       <Calendar className="w-4 h-4" />
-                      Schedule Visit
+                      Book Appointment
                     </a>
                   </div>
                 </div>
