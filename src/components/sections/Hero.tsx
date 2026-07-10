@@ -53,7 +53,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/images/hero-bg.png')" }}
+          style={{ backgroundImage: "url('https://res.cloudinary.com/dmzrplt5o/image/upload/v1783711792/hsptl_img_dyvo8w.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-teal-900/92 via-teal-800/85 to-teal-700/60" />
         {/* Decorative elements */}
@@ -196,7 +196,7 @@ export default function Hero() {
               {/* Doctor Image Container */}
               <div className="relative rounded-full overflow-hidden border-4 border-white/20 shadow-2xl shadow-teal-900/50 aspect-[3/4] mx-auto" style={{ transform: "translateZ(0px)" }}>
                 <Image
-                  src="/images/hero-doctor.png"
+                  src="https://res.cloudinary.com/dmzrplt5o/image/upload/v1783711792/hsptl_img_dyvo8w.jpg"
                   alt="Sri Suraksha Multi Speciality Hospital Building, Metpally"
                   fill
                   className="object-cover object-center"
