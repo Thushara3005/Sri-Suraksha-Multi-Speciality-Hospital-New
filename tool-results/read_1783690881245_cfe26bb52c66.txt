@@ -1,0 +1,656 @@
+     1→     1→"use client";
+     2→     2→
+     3→     3→import { motion, useInView, AnimatePresence } from "framer-motion";
+     4→     4→import { useRef, useState, MouseEvent } from "react";
+     5→     5→import Image from "next/image";
+     6→     6→import {
+     7→     7→  X,
+     8→     8→  Stethoscope,
+     9→     9→  Heart,
+    10→    10→  Syringe,
+    11→    11→  Microscope,
+    12→    12→  UserRound,
+    13→    13→  Building2,
+    14→    14→  Baby,
+    15→    15→  ScanEye,
+    16→    16→  Clock,
+    17→    17→  Award,
+    18→    18→  GraduationCap,
+    19→    19→  Calendar,
+    20→    20→  MapPin,
+    21→    21→  Phone,
+    22→    22→  Star,
+    23→    23→} from "lucide-react";
+    24→    24→
+    25→    25→interface GalleryItem {
+    26→    26→  src: string;
+    27→    27→  alt: string;
+    28→    28→  category: string;
+    29→    29→  info: string;
+    30→    30→  icon: React.ElementType;
+    31→    31→  // Extended detail info
+    32→    32→  name?: string;
+    33→    33→  specialty?: string;
+    34→    34→  qualifications?: string;
+    35→    35→  experience?: string;
+    36→    36→  description?: string;
+    37→    37→  availability?: string;
+    38→    38→  location?: string;
+    39→    39→  rating?: number;
+    40→    40→}
+    41→    41→
+    42→    42→const galleryImages: GalleryItem[] = [
+    43→    43→  {
+    44→    44→    src: "/images/doctor1.png",
+    45→    45→    alt: "Dr. Ramesh Kumar",
+    46→    46→    category: "doctors",
+    47→    47→    info: "MBBS, MD (General Medicine) | 20+ Years",
+    48→    48→    icon: Stethoscope,
+    49→    49→    name: "Dr. Ramesh Kumar",
+    50→    50→    specialty: "Senior Consultant Physician",
+    51→    51→    qualifications: "MBBS, MD (General Medicine)",
+    52→    52→    experience: "20+ Years Experience",
+    53→    53→    description:
+    54→    54→      "Dr. Ramesh Kumar is a highly experienced physician specializing in internal medicine and chronic disease management. He has treated over 50,000 patients and is known for his compassionate care and accurate diagnoses.",
+    55→    55→    availability: "Mon - Sat, 9:00 AM - 1:00 PM",
+    56→    56→    location: "General Medicine Wing, 2nd Floor",
+    57→    57→    rating: 4.9,
+    58→    58→  },
+    59→    59→  {
+    60→    60→    src: "/images/doctor2.png",
+    61→    61→    alt: "Dr. Priya Sharma",
+    62→    62→    category: "doctors",
+    63→    63→    info: "MBBS, MS (OBG) | 15+ Years",
+    64→    64→    icon: Heart,
+    65→    65→    name: "Dr. Priya Sharma",
+    66→    66→    specialty: "Gynecologist & Obstetrician",
+    67→    67→    qualifications: "MBBS, MS (Obstetrics & Gynecology)",
+    68→    68→    experience: "15+ Years Experience",
+    69→    69→    description:
+    70→    70→      "Dr. Priya Sharma is a leading gynecologist with expertise in high-risk pregnancies, laparoscopic surgeries, and fertility treatments. She has successfully delivered over 8,000 babies and is passionate about women's health.",
+    71→    71→    availability: "Mon - Fri, 10:00 AM - 4:00 PM",
+    72→    72→    location: "Women's Health Wing, 3rd Floor",
+    73→    73→    rating: 4.8,
+    74→    74→  },
+    75→    75→  {
+    76→    76→    src: "/images/doctor3.png",
+    77→    77→    alt: "Dr. Suresh Reddy",
+    78→    78→    category: "doctors",
+    79→    79→    info: "MBBS, MD (Pediatrics) | 12+ Years",
+    80→    80→    icon: Baby,
+    81→    81→    name: "Dr. Suresh Reddy",
+    82→    82→    specialty: "Pediatrician & Neonatologist",
+    83→    83→    qualifications: "MBBS, MD (Pediatrics), Fellowship in Neonatology",
+    84→    84→    experience: "12+ Years Experience",
+    85→    85→    description:
+    86→    86→      "Dr. Suresh Reddy is a dedicated pediatrician who provides comprehensive care for children from newborns to adolescents. His gentle approach and expertise in neonatal care have saved countless premature babies.",
+    87→    87→    availability: "Mon - Sat, 9:00 AM - 3:00 PM",
+    88→    88→    location: "Pediatric Wing, 1st Floor",
+    89→    89→    rating: 4.9,
+    90→    90→  },
+    91→    91→  {
+    92→    92→    src: "/images/doctor4.png",
+    93→    93→    alt: "Dr. Anitha Rao",
+    94→    94→    category: "doctors",
+    95→    95→    info: "MBBS, MS (General Surgery) | 10+ Years",
+    96→    96→    icon: Syringe,
+    97→    97→    name: "Dr. Anitha Rao",
+    98→    98→    specialty: "General & Laparoscopic Surgeon",
+    99→    99→    qualifications: "MBBS, MS (General Surgery), FMAS",
+   100→   100→    experience: "10+ Years Experience",
+   101→   101→    description:
+   102→   102→      "Dr. Anitha Rao is a skilled surgeon specializing in minimally invasive laparoscopic procedures. She has performed over 3,000 successful surgeries with a focus on patient safety and faster recovery times.",
+   103→   103→    availability: "Tue, Thu, Sat, 10:00 AM - 2:00 PM",
+   104→   104→    location: "Surgical Wing, 4th Floor",
+   105→   105→    rating: 4.7,
+   106→   106→  },
+   107→   107→  {
+   108→   108→    src: "/images/doctor5.png",
+   109→   109→    alt: "Dr. Venkat Prasad",
+   110→   110→    category: "doctors",
+   111→   111→    info: "MBBS, DNB (Family Medicine) | 18+ Years",
+   112→   112→    icon: Stethoscope,
+   113→   113→    name: "Dr. Venkat Prasad",
+   114→   114→    specialty: "Senior Consultant - Family Medicine",
+   115→   115→    qualifications: "MBBS, DNB (Family Medicine)",
+   116→   116→    experience: "18+ Years Experience",
+   117→   117→    description:
+   118→   118→      "Dr. Venkat Prasad brings vast experience in family medicine and holistic healthcare. He focuses on preventive care, lifestyle management, and building long-term doctor-patient relationships for better health outcomes.",
+   119→   119→    availability: "Mon - Sat, 8:30 AM - 12:30 PM",
+   120→   120→    location: "Family Medicine Wing, 1st Floor",
+   121→   121→    rating: 4.8,
+   122→   122→  },
+   123→   123→  {
+   124→   124→    src: "/images/doctor6.png",
+   125→   125→    alt: "Dr. Arvind Krishnan",
+   126→   126→    category: "doctors",
+   127→   127→    info: "MBBS, MD (Dermatology) | 14+ Years",
+   128→   128→    icon: ScanEye,
+   129→   129→    name: "Dr. Arvind Krishnan",
+   130→   130→    specialty: "Dermatologist & Cosmetologist",
+   131→   131→    qualifications: "MBBS, MD (Dermatology), Fellowship in Cosmetology",
+   132→   132→    experience: "14+ Years Experience",
+   133→   133→    description:
+   134→   134→      "Dr. Arvind Krishnan is an expert dermatologist specializing in skin disorders, cosmetic procedures, and laser treatments. His clinic offers advanced skincare solutions backed by the latest dermatological research.",
+   135→   135→    availability: "Mon, Wed, Fri, 10:00 AM - 5:00 PM",
+   136→   136→    location: "Dermatology Wing, 2nd Floor",
+   137→   137→    rating: 4.8,
+   138→   138→  },
+   139→   139→  {
+   140→   140→    src: "/images/doctor7.png",
+   141→   141→    alt: "Dr. Meena Kumari",
+   142→   142→    category: "doctors",
+   143→   143→    info: "MBBS, DGO, DNB (OBG) | 16+ Years",
+   144→   144→    icon: Heart,
+   145→   145→    name: "Dr. Meena Kumari",
+   146→   146→    specialty: "Gynecologist & Fertility Specialist",
+   147→   147→    qualifications: "MBBS, DGO, DNB (Obstetrics & Gynecology)",
+   148→   148→    experience: "16+ Years Experience",
+   149→   149→    description:
+   150→   150→      "Dr. Meena Kumari is a renowned fertility specialist with exceptional success rates in IVF and reproductive medicine. She provides personalized treatment plans and emotional support throughout the fertility journey.",
+   151→   151→    availability: "Mon - Fri, 9:00 AM - 3:00 PM",
+   152→   152→    location: "Fertility Center, 3rd Floor",
+   153→   153→    rating: 4.9,
+   154→   154→  },
+   155→   155→  {
+   156→   156→    src: "/images/doctor-team.png",
+   157→   157→    alt: "Our Expert Medical Team",
+   158→   158→    category: "doctors",
+   159→   159→    info: "Team of Board-Certified Specialists",
+   160→   160→    icon: UserRound,
+   161→   161→    name: "Our Expert Medical Team",
+   162→   162→    specialty: "Multidisciplinary Healthcare Team",
+   163→   163→    qualifications: "Board-Certified Specialists across all departments",
+   164→   164→    experience: "Combined 100+ Years of Medical Excellence",
+   165→   165→    description:
+   166→   166→      "Our team comprises highly qualified and experienced doctors across all specialties. Together, they bring decades of combined medical expertise and a shared commitment to delivering exceptional patient care.",
+   167→   167→    availability: "24/7 Emergency Services Available",
+   168→   168→    location: "All Departments, Sharvex Health Care",
+   169→   169→    rating: 4.9,
+   170→   170→  },
+   171→   171→  {
+   172→   172→    src: "/images/facility1.png",
+   173→   173→    alt: "Modern Clinic Reception",
+   174→   174→    category: "facility",
+   175→   175→    info: "Comfortable & Hygienic Patient Waiting Area",
+   176→   176→    icon: Building2,
+   177→   177→    name: "Modern Clinic Reception",
+   178→   178→    specialty: "Patient Reception & Waiting Area",
+   179→   179→    qualifications: "Spacious, Air-Conditioned, Wheelchair Accessible",
+   180→   180→    experience: "Designed for Patient Comfort & Safety",
+   181→   181→    description:
+   182→   182→      "Our reception area is designed to provide a warm, comfortable, and hygienic environment for patients and their families. Equipped with modern amenities, digital queue management, and friendly staff.",
+   183→   183→    availability: "Open All Days, 7:00 AM - 10:00 PM",
+   184→   184→    location: "Ground Floor, Main Entrance",
+   185→   185→    rating: 4.7,
+   186→   186→  },
+   187→   187→  {
+   188→   188→    src: "/images/facility2.png",
+   189→   189→    alt: "Advanced Diagnostic Center",
+   190→   190→    category: "facility",
+   191→   191→    info: "State-of-the-Art Ultrasound & Lab Facility",
+   192→   192→    icon: Microscope,
+   193→   193→    name: "Advanced Diagnostic Center",
+   194→   194→    specialty: "Diagnostic & Imaging Services",
+   195→   195→    qualifications: "NABL Accredited Lab, Advanced 4D Ultrasound",
+   196→   196→    experience: "Accurate Reports with Quick Turnaround",
+   197→   197→    description:
+   198→   198→      "Our diagnostic center features the latest ultrasound machines, digital X-ray, and fully automated pathology lab. We ensure accurate and timely reports to support precise medical decision-making.",
+   199→   199→    availability: "Mon - Sat, 7:00 AM - 8:00 PM",
+   200→   200→    location: "Diagnostics Wing, Ground Floor",
+   201→   201→    rating: 4.8,
+   202→   202→  },
+   203→   203→  {
+   204→   204→    src: "/images/service-general.png",
+   205→   205→    alt: "General Medicine Consultation",
+   206→   206→    category: "facility",
+   207→   207→    info: "Well-Equipped Consultation Chambers",
+   208→   208→    icon: Building2,
+   209→   209→    name: "General Medicine Consultation",
+   210→   210→    specialty: "Outpatient Consultation Services",
+   211→   211→    qualifications: "Private Chambers with Modern Equipment",
+   212→   212→    experience: "Personalized One-on-One Consultations",
+   213→   213→    description:
+   214→   214→      "Our consultation chambers are equipped with the latest diagnostic tools and designed for patient privacy. Each room ensures a comfortable setting for thorough medical consultations and examinations.",
+   215→   215→    availability: "Mon - Sat, By Appointment",
+   216→   216→    location: "OPD Wing, 1st Floor",
+   217→   217→    rating: 4.6,
+   218→   218→  },
+   219→   219→  {
+   220→   220→    src: "/images/service-surgery.png",
+   221→   221→    alt: "Advanced Surgical Theater",
+   222→   222→    category: "services",
+   223→   223→    info: "Modern Operation Theater with Latest Equipment",
+   224→   224→    icon: Syringe,
+   225→   225→    name: "Advanced Surgical Theater",
+   226→   226→    specialty: "Surgical & Operation Services",
+   227→   227→    qualifications: "Class 100 OT, Laminar Flow, Advanced Monitors",
+   228→   228→    experience: "Minimally Invasive & Open Surgical Procedures",
+   229→   229→    description:
+   230→   230→      "Our state-of-the-art operation theaters meet international safety standards with laminar airflow, advanced monitoring systems, and the latest surgical equipment for both routine and complex procedures.",
+   231→   231→    availability: "Scheduled Surgeries, 24/7 Emergency OT",
+   232→   232→    location: "Surgical Wing, 4th Floor",
+   233→   233→    rating: 4.9,
+   234→   234→  },
+   235→   235→  {
+   236→   236→    src: "/images/service-wellness.png",
+   237→   237→    alt: "Preventive Health & Wellness",
+   238→   238→    category: "services",
+   239→   239→    info: "Comprehensive Health Screening Programs",
+   240→   240→    icon: Heart,
+   241→   241→    name: "Preventive Health & Wellness",
+   242→   242→    specialty: "Health Checkup & Wellness Programs",
+   243→   243→    qualifications: "Customized Packages for All Age Groups",
+   244→   244→    experience: "Early Detection & Preventive Care Focus",
+   245→   245→    description:
+   246→   246→      "Our wellness programs offer comprehensive health screening packages tailored for different age groups and risk profiles. Early detection and preventive care are at the heart of our approach to long-term health.",
+   247→   247→    availability: "Mon - Sat, 7:00 AM - 11:00 AM (Fasting)",
+   248→   248→    location: "Wellness Center, Ground Floor",
+   249→   249→    rating: 4.7,
+   250→   250→  },
+   251→   251→  {
+   252→   252→    src: "/images/about-image.png",
+   253→   253→    alt: "Personalized Patient Consultation",
+   254→   254→    category: "services",
+   255→   255→    info: "One-on-One Dedicated Medical Consultation",
+   256→   256→    icon: Stethoscope,
+   257→   257→    name: "Personalized Patient Consultation",
+   258→   258→    specialty: "Dedicated Medical Consultation Services",
+   259→   259→    qualifications: "Compassionate Care with Individual Attention",
+   260→   260→    experience: "Holistic Approach to Treatment Planning",
+   261→   261→    description:
+   262→   262→      "We believe in providing personalized attention to every patient. Our dedicated consultation sessions ensure that each patient receives thorough evaluation, clear communication, and a tailored treatment plan.",
+   263→   263→    availability: "By Appointment, All Weekdays",
+   264→   264→    location: "Consultation Wing, 2nd Floor",
+   265→   265→    rating: 4.8,
+   266→   266→  },
+   267→   267→];
+   268→   268→
+   269→   269→const categories = [
+   270→   270→  { id: "all", label: "All" },
+   271→   271→  { id: "doctors", label: "Our Doctors" },
+   272→   272→  { id: "facility", label: "Facility" },
+   273→   273→  { id: "services", label: "Services" },
+   274→   274→];
+   275→   275→
+   276→   276→function GalleryCard({
+   277→   277→  image,
+   278→   278→  index,
+   279→   279→  isInView,
+   280→   280→  onClick,
+   281→   281→}: {
+   282→   282→  image: GalleryItem;
+   283→   283→  index: number;
+   284→   284→  isInView: boolean;
+   285→   285→  onClick: () => void;
+   286→   286→}) {
+   287→   287→  const [tiltStyle, setTiltStyle] = useState<React.CSSProperties>({});
+   288→   288→  const [isHovered, setIsHovered] = useState(false);
+   289→   289→
+   290→   290→  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+   291→   291→    const rect = e.currentTarget.getBoundingClientRect();
+   292→   292→    const x = e.clientX - rect.left;
+   293→   293→    const y = e.clientY - rect.top;
+   294→   294→    const centerX = rect.width / 2;
+   295→   295→    const centerY = rect.height / 2;
+   296→   296→    const rotateY = ((x - centerX) / centerX) * 8;
+   297→   297→    const rotateX = ((centerY - y) / centerY) * 8;
+   298→   298→
+   299→   299→    setTiltStyle({
+   300→   300→      transform: `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`,
+   301→   301→      transition: "transform 0.2s cubic-bezier(0.03, 0.98, 0.52, 0.99)",
+   302→   302→      transformStyle: "preserve-3d",
+   303→   303→    });
+   304→   304→  };
+   305→   305→
+   306→   306→  const handleMouseLeave = () => {
+   307→   307→    setTiltStyle({
+   308→   308→      transform:
+   309→   309→        "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
+   310→   310→      transition: "transform 0.5s cubic-bezier(0.03, 0.98, 0.52, 0.99)",
+   311→   311→    });
+   312→   312→    setIsHovered(false);
+   313→   313→  };
+   314→   314→
+   315→   315→  return (
+   316→   316→    <motion.div
+   317→   317→      key={`gallery-${index}`}
+   318→   318→      className="perspective-1000"
+   319→   319→      initial={{ opacity: 0, scale: 0.9 }}
+   320→   320→      animate={isInView ? { opacity: 1, scale: 1 } : {}}
+   321→   321→      transition={{ duration: 0.4, delay: index * 0.06 }}
+   322→   322→    >
+   323→   323→      <div
+   324→   324→        className="group relative rounded-xl overflow-hidden shadow-md cursor-pointer aspect-square shine-3d"
+   325→   325→        style={tiltStyle}
+   326→   326→        onMouseMove={handleMouseMove}
+   327→   327→        onMouseEnter={() => setIsHovered(true)}
+   328→   328→        onMouseLeave={handleMouseLeave}
+   329→   329→        onClick={onClick}
+   330→   330→      >
+   331→   331→        <Image
+   332→   332→          src={image.src}
+   333→   333→          alt={image.alt}
+   334→   334→          fill
+   335→   335→          className="object-cover group-hover:scale-110 transition-transform duration-700"
+   336→   336→        />
+   337→   337→        <div className="absolute inset-0 bg-gradient-to-t from-teal-900/80 via-teal-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+   338→   338→
+   339→   339→        {/* 3D floating icon badge */}
+   340→   340→        <div
+   341→   341→          className="absolute top-2 right-2 w-7 h-7 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-md"
+   342→   342→          style={{
+   343→   343→            transformStyle: "preserve-3d",
+   344→   344→            transform: isHovered ? "translateZ(40px)" : "translateZ(0px)",
+   345→   345→            transition: "transform 0.3s ease, opacity 0.3s ease",
+   346→   346→          }}
+   347→   347→        >
+   348→   348→          <image.icon className="w-3.5 h-3.5 text-teal-600" />
+   349→   349→        </div>
+   350→   350→
+   351→   351→        {/* Info overlay with 3D depth */}
+   352→   352→        <div
+   353→   353→          className="absolute bottom-0 left-0 right-0 p-2.5 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+   354→   354→          style={{ transformStyle: "preserve-3d" }}
+   355→   355→        >
+   356→   356→          <p
+   357→   357→            className="text-white font-semibold text-xs leading-tight"
+   358→   358→            style={{
+   359→   359→              transform: isHovered ? "translateZ(30px)" : "translateZ(0px)",
+   360→   360→              transition: "transform 0.3s ease 0.1s",
+   361→   361→            }}
+   362→   362→          >
+   363→   363→            {image.name || image.alt}
+   364→   364→          </p>
+   365→   365→          <p
+   366→   366→            className="text-teal-200 text-[10px] mt-0.5"
+   367→   367→            style={{
+   368→   368→              transform: isHovered ? "translateZ(20px)" : "translateZ(0px)",
+   369→   369→              transition: "transform 0.3s ease 0.15s",
+   370→   370→            }}
+   371→   371→          >
+   372→   372→            {image.specialty || image.info}
+   373→   373→          </p>
+   374→   374→        </div>
+   375→   375→
+   376→   376→        {/* 3D border glow on hover */}
+   377→   377→        <div className="absolute inset-0 rounded-xl border-2 border-teal-400/0 group-hover:border-teal-400/30 transition-all duration-300 pointer-events-none" />
+   378→   378→      </div>
+   379→   379→    </motion.div>
+   380→   380→  );
+   381→   381→}
+   382→   382→
+   383→   383→export default function Gallery() {
+   384→   384→  const ref = useRef(null);
+   385→   385→  const isInView = useInView(ref, { once: true, margin: "-100px" });
+   386→   386→  const [activeCategory, setActiveCategory] = useState("all");
+   387→   387→  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+   388→   388→
+   389→   389→  const filteredImages =
+   390→   390→    activeCategory === "all"
+   391→   391→      ? galleryImages
+   392→   392→      : galleryImages.filter((img) => img.category === activeCategory);
+   393→   393→
+   394→   394→  return (
+   395→   395→    <section
+   396→   396→      id="gallery"
+   397→   397→      className="py-12 sm:py-16 lg:py-28 bg-gray-50"
+   398→   398→      ref={ref}
+   399→   399→    >
+   400→   400→      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   401→   401→        {/* Section Header */}
+   402→   402→        <motion.div
+   403→   403→          className="text-center max-w-3xl mx-auto mb-8 sm:mb-12"
+   404→   404→          initial={{ opacity: 0, y: 30 }}
+   405→   405→          animate={isInView ? { opacity: 1, y: 0 } : {}}
+   406→   406→          transition={{ duration: 0.6 }}
+   407→   407→        >
+   408→   408→          <span className="text-teal-600 font-semibold text-xs sm:text-sm tracking-wider uppercase">
+   409→   409→            Gallery
+   410→   410→          </span>
+   411→   411→          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mt-2 sm:mt-3 font-[family-name:var(--font-inter)]">
+   412→   412→            Our <span className="gradient-text">Gallery</span>
+   413→   413→          </h2>
+   414→   414→          <p className="text-gray-600 text-sm sm:text-base lg:text-lg mt-3 sm:mt-4 leading-relaxed">
+   415→   415→            Meet our expert doctors and explore our world-class healthcare
+   416→   416→            facility.
+   417→   417→          </p>
+   418→   418→        </motion.div>
+   419→   419→
+   420→   420→        {/* Category Filter */}
+   421→   421→        <motion.div
+   422→   422→          className="flex items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-10 flex-wrap"
+   423→   423→          initial={{ opacity: 0 }}
+   424→   424→          animate={isInView ? { opacity: 1 } : {}}
+   425→   425→          transition={{ duration: 0.4, delay: 0.2 }}
+   426→   426→        >
+   427→   427→          {categories.map((cat) => (
+   428→   428→            <button
+   429→   429→              key={cat.id}
+   430→   430→              onClick={() => setActiveCategory(cat.id)}
+   431→   431→              className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
+   432→   432→                activeCategory === cat.id
+   433→   433→                  ? "bg-teal-600 text-white shadow-lg shadow-teal-200 scale-105"
+   434→   434→                  : "bg-white text-gray-600 hover:bg-teal-50 hover:text-teal-600 border border-gray-200 hover:border-teal-300 hover:scale-105"
+   435→   435→              }`}
+   436→   436→            >
+   437→   437→              {cat.label}
+   438→   438→            </button>
+   439→   439→          ))}
+   440→   440→        </motion.div>
+   441→   441→
+   442→   442→        {/* Gallery Grid - Smaller thumbnails */}
+   443→   443→        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5 sm:gap-4">
+   444→   444→          {filteredImages.map((image, index) => (
+   445→   445→            <GalleryCard
+   446→   446→              key={`${activeCategory}-${index}`}
+   447→   447→              image={image}
+   448→   448→              index={index}
+   449→   449→              isInView={isInView}
+   450→   450→              onClick={() => setSelectedItem(image)}
+   451→   451→            />
+   452→   452→          ))}
+   453→   453→        </div>
+   454→   454→      </div>
+   455→   455→
+   456→   456→      {/* Detail Panel - Info Left, Image Right */}
+   457→   457→      <AnimatePresence>
+   458→   458→        {selectedItem && (
+   459→   459→          <motion.div
+   460→   460→            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-6"
+   461→   461→            initial={{ opacity: 0 }}
+   462→   462→            animate={{ opacity: 1 }}
+   463→   463→            exit={{ opacity: 0 }}
+   464→   464→            onClick={() => setSelectedItem(null)}
+   465→   465→          >
+   466→   466→            <motion.div
+   467→   467→              className="relative bg-white rounded-2xl sm:rounded-3xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden"
+   468→   468→              initial={{ scale: 0.85, y: 40, opacity: 0 }}
+   469→   469→              animate={{ scale: 1, y: 0, opacity: 1 }}
+   470→   470→              exit={{ scale: 0.85, y: 40, opacity: 0 }}
+   471→   471→              transition={{ duration: 0.4, type: "spring", damping: 25 }}
+   472→   472→              onClick={(e) => e.stopPropagation()}
+   473→   473→            >
+   474→   474→              {/* Close button */}
+   475→   475→              <button
+   476→   476→                className="absolute top-3 right-3 sm:top-5 sm:right-5 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all duration-200 text-gray-500"
+   477→   477→                onClick={() => setSelectedItem(null)}
+   478→   478→                aria-label="Close details"
+   479→   479→              >
+   480→   480→                <X className="w-4 h-4 sm:w-5 sm:h-5" />
+   481→   481→              </button>
+   482→   482→
+   483→   483→              <div className="flex flex-col md:flex-row w-full">
+   484→   484→                {/* LEFT SIDE - Information */}
+   485→   485→                <div className="flex-1 p-5 sm:p-8 lg:p-10 order-2 md:order-1 overflow-y-auto max-h-[50vh] md:max-h-[90vh]">
+   486→   486→                  {/* Category badge */}
+   487→   487→                  <div className="flex items-center gap-2 mb-3 sm:mb-4">
+   488→   488→                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-medium">
+   489→   489→                      <selectedItem.icon className="w-3.5 h-3.5" />
+   490→   490→                      {selectedItem.category === "doctors"
+   491→   491→                        ? "Our Doctors"
+   492→   492→                        : selectedItem.category === "facility"
+   493→   493→                          ? "Facility"
+   494→   494→                          : "Services"}
+   495→   495→                    </span>
+   496→   496→                    {selectedItem.rating && (
+   497→   497→                      <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
+   498→   498→                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+   499→   499→                        {selectedItem.rating}
+   500→   500→                      </span>
+   501→   501→                    )}
+   502→   502→                  </div>
+   503→   503→
+   504→   504→                  {/* Name */}
+   505→   505→                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 font-[family-name:var(--font-inter)]">
+   506→   506→                    {selectedItem.name || selectedItem.alt}
+   507→   507→                  </h2>
+   508→   508→
+   509→   509→                  {/* Specialty */}
+   510→   510→                  {selectedItem.specialty && (
+   511→   511→                    <p className="text-teal-600 font-semibold text-sm sm:text-base lg:text-lg mt-1 sm:mt-2">
+   512→   512→                      {selectedItem.specialty}
+   513→   513→                    </p>
+   514→   514→                  )}
+   515→   515→
+   516→   516→                  {/* Divider */}
+   517→   517→                  <div className="w-16 h-0.5 bg-gradient-to-r from-teal-400 to-teal-600 rounded-full my-4 sm:my-5" />
+   518→   518→
+   519→   519→                  {/* Detail items */}
+   520→   520→                  <div className="space-y-3 sm:space-y-4">
+   521→   521→                    {/* Qualifications */}
+   522→   522→                    {selectedItem.qualifications && (
+   523→   523→                      <div className="flex items-start gap-3">
+   524→   524→                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+   525→   525→                          <GraduationCap className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-teal-600" />
+   526→   526→                        </div>
+   527→   527→                        <div>
+   528→   528→                          <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-medium">
+   529→   529→                            Qualifications
+   530→   530→                          </p>
+   531→   531→                          <p className="text-sm sm:text-base text-gray-700 font-medium">
+   532→   532→                            {selectedItem.qualifications}
+   533→   533→                          </p>
+   534→   534→                        </div>
+   535→   535→                      </div>
+   536→   536→                    )}
+   537→   537→
+   538→   538→                    {/* Experience */}
+   539→   539→                    {selectedItem.experience && (
+   540→   540→                      <div className="flex items-start gap-3">
+   541→   541→                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+   542→   542→                          <Award className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-teal-600" />
+   543→   543→                        </div>
+   544→   544→                        <div>
+   545→   545→                          <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-medium">
+   546→   546→                            Experience
+   547→   547→                          </p>
+   548→   548→                          <p className="text-sm sm:text-base text-gray-700 font-medium">
+   549→   549→                            {selectedItem.experience}
+   550→   550→                          </p>
+   551→   551→                        </div>
+   552→   552→                      </div>
+   553→   553→                    )}
+   554→   554→
+   555→   555→                    {/* Availability */}
+   556→   556→                    {selectedItem.availability && (
+   557→   557→                      <div className="flex items-start gap-3">
+   558→   558→                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+   559→   559→                          <Clock className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-teal-600" />
+   560→   560→                        </div>
+   561→   561→                        <div>
+   562→   562→                          <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-medium">
+   563→   563→                            Availability
+   564→   564→                          </p>
+   565→   565→                          <p className="text-sm sm:text-base text-gray-700 font-medium">
+   566→   566→                            {selectedItem.availability}
+   567→   567→                          </p>
+   568→   568→                        </div>
+   569→   569→                      </div>
+   570→   570→                    )}
+   571→   571→
+   572→   572→                    {/* Location */}
+   573→   573→                    {selectedItem.location && (
+   574→   574→                      <div className="flex items-start gap-3">
+   575→   575→                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+   576→   576→                          <MapPin className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-teal-600" />
+   577→   577→                        </div>
+   578→   578→                        <div>
+   579→   579→                          <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-medium">
+   580→   580→                            Location
+   581→   581→                          </p>
+   582→   582→                          <p className="text-sm sm:text-base text-gray-700 font-medium">
+   583→   583→                            {selectedItem.location}
+   584→   584→                          </p>
+   585→   585→                        </div>
+   586→   586→                      </div>
+   587→   587→                    )}
+   588→   588→                  </div>
+   589→   589→
+   590→   590→                  {/* Description */}
+   591→   591→                  {selectedItem.description && (
+   592→   592→                    <div className="mt-4 sm:mt-6">
+   593→   593→                      <p className="text-gray-500 text-xs sm:text-sm leading-relaxed">
+   594→   594→                        {selectedItem.description}
+   595→   595→                      </p>
+   596→   596→                    </div>
+   597→   597→                  )}
+   598→   598→
+   599→   599→                  {/* CTA Buttons */}
+   600→   600→                  <div className="mt-5 sm:mt-7 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+   601→   601→                    <a
+   602→   602→                      href="tel:+919876543210"
+   603→   603→                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-teal-600 text-white rounded-xl text-sm font-semibold hover:bg-teal-700 transition-colors shadow-lg shadow-teal-200"
+   604→   604→                    >
+   605→   605→                      <Phone className="w-4 h-4" />
+   606→   606→                      Book Appointment
+   607→   607→                    </a>
+   608→   608→                    <a
+   609→   609→                      href="https://wa.me/919876543210"
+   610→   610→                      target="_blank"
+   611→   611→                      rel="noopener noreferrer"
+   612→   612→                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white text-teal-700 border-2 border-teal-200 rounded-xl text-sm font-semibold hover:bg-teal-50 hover:border-teal-300 transition-colors"
+   613→   613→                    >
+   614→   614→                      <Calendar className="w-4 h-4" />
+   615→   615→                      Schedule Visit
+   616→   616→                    </a>
+   617→   617→                  </div>
+   618→   618→                </div>
+   619→   619→
+   620→   620→                {/* RIGHT SIDE - Image */}
+   621→   621→                <div className="relative w-full md:w-[45%] lg:w-[50%] h-[45vh] sm:h-[55vh] md:h-auto order-1 md:order-2 flex-shrink-0">
+   622→   622→                  {/* Gradient overlay for image */}
+   623→   623→                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/10 z-10 pointer-events-none" />
+   624→   624→
+   625→   625→                  <Image
+   626→   626→                    src={selectedItem.src}
+   627→   627→                    alt={selectedItem.alt}
+   628→   628→                    fill
+   629→   629→                    className="object-cover object-top"
+   630→   630→                    sizes="(max-width: 768px) 100vw, 50vw"
+   631→   631→                  />
+   632→   632→
+   633→   633→                  {/* Bottom gradient on image for mobile */}
+   634→   634→                  <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent z-10 md:hidden" />
+   635→   635→
+   636→   636→                  {/* Name overlay on image for mobile */}
+   637→   637→                  <div className="absolute bottom-4 left-5 z-20 md:hidden">
+   638→   638→                    <h3 className="text-lg font-bold text-gray-900">
+   639→   639→                      {selectedItem.name || selectedItem.alt}
+   640→   640→                    </h3>
+   641→   641→                    {selectedItem.specialty && (
+   642→   642→                      <p className="text-teal-600 text-sm font-medium">
+   643→   643→                        {selectedItem.specialty}
+   644→   644→                      </p>
+   645→   645→                    )}
+   646→   646→                  </div>
+   647→   647→                </div>
+   648→   648→              </div>
+   649→   649→            </motion.div>
+   650→   650→          </motion.div>
+   651→   651→        )}
+   652→   652→      </AnimatePresence>
+   653→   653→    </section>
+   654→   654→  );
+   655→   655→}
+   656→   656→
