@@ -42,11 +42,11 @@ export default function Footer() {
           <div className="space-y-4 sm:space-y-6 col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3">
               <Image
-                src="/logo.png"
+                src="/images/footer-logo.png"
                 alt="Sri Suraksha Multi Speciality Hospital"
                 width={200}
                 height={200}
-                className="h-10 sm:h-12 w-10 sm:w-12 object-contain brightness-0 invert"
+                className="h-10 sm:h-12 w-10 sm:w-12 object-contain rounded-full"
               />
             </div>
             <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
