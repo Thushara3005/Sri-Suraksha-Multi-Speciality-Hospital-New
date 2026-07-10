@@ -53,7 +53,7 @@ const galleryImages: GalleryItem[] = [
       "Our skilled Gynecologist specializes in women's health, prenatal care, obstetrics, and reproductive health with over 12 years of clinical expertise in gynecological procedures and patient care.",
     availability: "Available 24/7",
     location: "Sri Suraksha Multi Speciality Hospital, Metpally",
-    rating: 4.9,
+    rating: 4.1,
   },
 
   {

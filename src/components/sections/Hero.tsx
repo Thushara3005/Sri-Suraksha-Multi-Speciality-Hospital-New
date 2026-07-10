@@ -137,7 +137,7 @@ export default function Hero() {
               {[
                 { value: "12+", label: "Years Experience" },
                 { value: "24/7", label: "Available" },
-                { value: "4.9", label: "Google Rating" },
+                { value: "4.1", label: "Google Rating" },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}
@@ -243,7 +243,7 @@ export default function Hero() {
                 </div>
                 <div>
                   <p className="text-[10px] sm:text-xs xl:text-sm font-semibold text-gray-800">
-                    4.9 Rating
+                    4.1 Rating
                   </p>
                   <p className="text-[8px] sm:text-[10px] xl:text-xs text-gray-500">Google Reviews</p>
                 </div>
