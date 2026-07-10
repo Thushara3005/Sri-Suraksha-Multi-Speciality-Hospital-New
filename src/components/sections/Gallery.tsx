@@ -91,6 +91,16 @@ const galleryImages: GalleryItem[] = [
     description: "Sri Suraksha Multi Speciality Hospital building in Metpally, providing comprehensive healthcare services.",
     location: "Sri Suraksha Multi Speciality Hospital, Metpally",
   },
+  {
+    src: "/images/mens-patients-room.png",
+    alt: "Mens Patients Room",
+    category: "hospital",
+    info: "Mens Patients Room",
+    icon: Building2,
+    name: "Mens Patients Room",
+    description: "Mens patients room at Sri Suraksha Multi Speciality Hospital, Metpally, ensuring comfortable care and privacy.",
+    location: "Sri Suraksha Multi Speciality Hospital, Metpally",
+  },
 ];
 
 const categories = [
