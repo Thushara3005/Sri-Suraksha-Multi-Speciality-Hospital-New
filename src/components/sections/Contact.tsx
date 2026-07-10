@@ -20,7 +20,7 @@ export default function Contact() {
     const message = formData.get("message") as string;
 
     const whatsappMessage = `Hi, I'd like to book an appointment.\n\nName: ${name}\nPhone: ${phone}\nMessage: ${message}`;
-    const whatsappUrl = `https://wa.me/917947118058?text=${encodeURIComponent(whatsappMessage)}`;
+    const whatsappUrl = `https://wa.me/919014759130?text=${encodeURIComponent(whatsappMessage)}`;
     window.open(whatsappUrl, "_blank");
   };
 
@@ -86,10 +86,10 @@ export default function Contact() {
                   <div>
                     <p className="font-semibold text-xs sm:text-sm">Call Us</p>
                     <a
-                      href="tel:07947118058"
+                      href="tel:09014759130"
                       className="text-teal-200 hover:text-white transition-colors text-sm"
                     >
-                      07947118058
+                      09014759130
                     </a>
                   </div>
                 </div>
@@ -125,7 +125,7 @@ export default function Contact() {
 
               {/* WhatsApp Button */}
               <motion.a
-                href="https://wa.me/917947118058"
+                href="https://wa.me/919014759130"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 sm:mt-8 w-full inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white rounded-xl py-2.5 sm:py-3 px-4 sm:px-6 font-semibold transition-colors shadow-lg text-sm sm:text-base"
