@@ -65,10 +65,17 @@ export default function RootLayout({
             __html: `
               (function(){
                 function clean(){
-                  var els=document.querySelectorAll('[fdprocessedid]');
-                  for(var i=0;i<els.length;i++) els[i].removeAttribute('fdprocessedid');
+                  try{
+                    var els=document.querySelectorAll('[fdprocessedid]');
+                    for(var i=0;i<els.length;i++) els[i].removeAttribute('fdprocessedid');
+                  }catch(e){}
+                }
+                function loop(){
+                  clean();
+                  if(document.readyState!=='complete') requestAnimationFrame(loop);
                 }
                 clean();
+                loop();
                 var mo=new MutationObserver(clean);
                 if(document.documentElement){
                   mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['fdprocessedid']});
@@ -77,10 +84,7 @@ export default function RootLayout({
                     mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['fdprocessedid']});
                   });
                 }
-                var iv=setInterval(function(){
-                  clean();
-                  if(document.readyState==='complete'){clearInterval(iv);mo.disconnect();}
-                },10);
+                window.addEventListener('load',function(){setTimeout(function(){mo.disconnect();},5000);});
               })();
             `,
           }}
