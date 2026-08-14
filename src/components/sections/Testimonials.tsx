@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Award, BedDouble, Clock, Stethoscope, Shield, Heart } from "lucide-react";
 
 const features = [
@@ -28,6 +29,7 @@ const features = [
 ];
 
 export default function Testimonials() {
+  const router = useRouter();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -95,10 +97,10 @@ export default function Testimonials() {
             </p>
 
             <motion.a
-              href="#contact"
+              href="/bookAppointment"
               onClick={(e) => {
                 e.preventDefault();
-                handleScrollTo("#contact");
+                router.push("/bookAppointment");
               }}
               className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base shadow-lg shadow-teal-200 transition-all mt-2"
               whileHover={{ scale: 1.05, y: -2 }}

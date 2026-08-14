@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -29,4 +29,51 @@ model Post {
   authorId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Appointment {
+  id             String     @id @default(cuid())
+  patientName    String
+  phoneNumber    String
+  age            Int?
+  gender         String?
+  department     String
+  doctor         String?
+  preferredDate  String
+  preferredTime  String
+  reason         String?
+  place          String?
+  language       String     @default("en")
+  status         String     @default("Pending")
+  paymentStatus  String     @default("Unpaid")
+  paymentMode    String?
+  reminderSent   Boolean    @default(false)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  reminders      Reminder[]
+}
+
+model Admin {
+  id       String @id @default(cuid())
+  username String @unique
+  phone    String @unique
+  password String
+  name     String
+}
+
+model Reminder {
+  id              String      @id @default(cuid())
+  appointmentId   String
+  appointment     Appointment @relation(fields: [appointmentId], references: [id])
+  patientName     String
+  phoneNumber     String
+  appointmentDate String
+  appointmentTime String
+  reminderType    String
+  language        String      @default("en")
+  sentStatus      String      @default("Pending")
+  errorMessage    String?
+  scheduledFor    DateTime
+  sentAt          DateTime?
+  createdAt       DateTime    @default(now())
 }

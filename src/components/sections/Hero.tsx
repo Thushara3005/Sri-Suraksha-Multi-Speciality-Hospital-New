@@ -3,10 +3,12 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef, MouseEvent } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight, Star, Clock, Shield } from "lucide-react";
 
 export default function Hero() {
+  const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -107,7 +109,7 @@ export default function Hero() {
             >
               <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.98, y: 2 }}>
                 <Button
-                  onClick={() => handleScrollTo("#contact")}
+                  onClick={() => router.push("/bookAppointment")}
                   size="lg"
                   className="btn-3d-white bg-white text-teal-700 hover:bg-teal-50 rounded-full px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-semibold group"
                 >

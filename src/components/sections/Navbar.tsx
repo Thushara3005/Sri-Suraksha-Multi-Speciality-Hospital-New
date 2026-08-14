@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
@@ -31,6 +32,7 @@ const navItems = [
 ];
 
 export default function Navbar() {
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -112,10 +114,10 @@ export default function Navbar() {
             </span>
           </div>
           <a
-            href="#contact"
+            href="/bookAppointment"
             onClick={(e) => {
               e.preventDefault();
-              handleNavClick("#contact");
+              router.push("/bookAppointment");
             }}
             className="hover:text-teal-200 transition-colors font-medium"
           >
@@ -126,11 +128,10 @@ export default function Navbar() {
 
       {/* Main Navbar */}
       <motion.nav
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          isScrolled
+        className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled
             ? "bg-white/95 backdrop-blur-md shadow-lg"
             : "bg-white shadow-sm"
-        }`}
+          }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
@@ -173,11 +174,10 @@ export default function Navbar() {
                       e.preventDefault();
                       handleNavClick(item.href);
                     }}
-                    className={`flex items-center gap-1 px-3 xl:px-4 py-2 font-medium transition-colors rounded-lg text-sm relative ${
-                      getIsActive(item.href)
+                    className={`flex items-center gap-1 px-3 xl:px-4 py-2 font-medium transition-colors rounded-lg text-sm relative ${getIsActive(item.href)
                         ? "text-teal-600 bg-teal-50"
                         : "text-gray-700 hover:text-teal-600 hover:bg-teal-50"
-                    }`}
+                      }`}
                   >
                     {item.label}
                     {item.children && (
@@ -223,7 +223,7 @@ export default function Navbar() {
                 </div>
               ))}
               <Button
-                onClick={() => handleNavClick("#contact")}
+                onClick={() => router.push("/bookAppointment")}
                 className="ml-3 xl:ml-4 bg-teal-600 hover:bg-teal-700 text-white rounded-full px-5 xl:px-6 shadow-lg shadow-teal-200 transition-all hover:shadow-xl hover:shadow-teal-200 text-sm"
               >
                 Book Appointment
@@ -268,11 +268,10 @@ export default function Navbar() {
                             handleNavClick(item.href);
                           }
                         }}
-                        className={`flex-1 py-3 px-2 font-medium transition-colors text-sm ${
-                          getIsActive(item.href)
+                        className={`flex-1 py-3 px-2 font-medium transition-colors text-sm ${getIsActive(item.href)
                             ? "text-teal-600 bg-teal-50 rounded-lg"
                             : "text-gray-700 hover:text-teal-600"
-                        }`}
+                          }`}
                       >
                         {item.label}
                       </a>
@@ -288,11 +287,10 @@ export default function Navbar() {
                           className="p-2 hover:bg-gray-100 rounded-lg"
                         >
                           <ChevronDown
-                            className={`w-4 h-4 text-gray-500 transition-transform ${
-                              mobileDropdown === item.label
+                            className={`w-4 h-4 text-gray-500 transition-transform ${mobileDropdown === item.label
                                 ? "rotate-180"
                                 : ""
-                            }`}
+                              }`}
                           />
                         </button>
                       )}
@@ -323,7 +321,7 @@ export default function Navbar() {
                 ))}
                 <div className="pt-4">
                   <Button
-                    onClick={() => handleNavClick("#contact")}
+                    onClick={() => router.push("/bookAppointment")}
                     className="w-full bg-teal-600 hover:bg-teal-700 text-white rounded-full py-3 shadow-lg text-sm"
                   >
                     Book Appointment

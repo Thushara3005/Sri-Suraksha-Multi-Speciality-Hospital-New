@@ -2,10 +2,12 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight, Phone } from "lucide-react";
 
 export default function CTASection() {
+  const router = useRouter();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -79,14 +81,7 @@ export default function CTASection() {
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
             >
               <Button
-                onClick={() => {
-                  const el = document.querySelector("#contact");
-                  if (el) {
-                    const offset = 80;
-                    const top = el.getBoundingClientRect().top + window.scrollY - offset;
-                    window.scrollTo({ top, behavior: "smooth" });
-                  }
-                }}
+                onClick={() => router.push("/bookAppointment")}
                 size="lg"
                 className="btn-3d-white bg-white text-teal-700 hover:bg-teal-50 rounded-full px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-semibold group w-full sm:w-auto"
               >
