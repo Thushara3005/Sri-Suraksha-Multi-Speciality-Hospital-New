@@ -23,7 +23,6 @@ const navItems = [
       { label: "General Medicine", href: "#services" },
       { label: "Gynecology", href: "#services" },
       { label: "Diagnostics Laboratory", href: "#services" },
-      { label: "Emergency Care", href: "#services" },
     ],
   },
   { label: "Gallery", href: "#gallery" },
@@ -72,22 +71,56 @@ export default function Navbar() {
     return () => observers.forEach((o) => o.disconnect());
   }, []);
 
+  useEffect(() => {
+    if (!isMobileOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobileOpen]);
+
   const closeMobile = useCallback(() => {
     setIsMobileOpen(false);
     setMobileDropdown(null);
   }, []);
 
+  const handleBookAppointment = useCallback(() => {
+    closeMobile();
+    router.push("/bookAppointment");
+  }, [closeMobile, router]);
+
   const handleNavClick = useCallback(
     (href: string) => {
+      const shouldDelay = isMobileOpen;
       closeMobile();
-      const el = document.querySelector(href);
-      if (el) {
-        const offset = 80;
-        const top = el.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: "smooth" });
+
+      const navigate = () => {
+        if (!href.startsWith("#")) {
+          if (href === "/bookAppointment") {
+            router.push(href);
+          }
+          return;
+        }
+
+        const sectionId = href.replace("#", "");
+        const el = document.getElementById(sectionId);
+        if (el) {
+          const offset = 80;
+          const top = el.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: "smooth" });
+        }
+      };
+
+      if (shouldDelay) {
+        window.setTimeout(navigate, 320);
+      } else {
+        navigate();
       }
     },
-    [closeMobile]
+    [closeMobile, isMobileOpen, router]
   );
 
   const getIsActive = (href: string) => {
@@ -102,11 +135,11 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4 sm:gap-6">
             <a
-              href="tel:+919014759130"
+              href="tel:+919390989540"
               className="flex items-center gap-1.5 sm:gap-2 hover:text-teal-200 transition-colors"
             >
               <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              9014759130
+              93909 89540
             </a>
             <span className="text-teal-300">|</span>
             <span className="text-teal-100">
@@ -117,7 +150,7 @@ export default function Navbar() {
             href="/bookAppointment"
             onClick={(e) => {
               e.preventDefault();
-              router.push("/bookAppointment");
+              handleBookAppointment();
             }}
             className="hover:text-teal-200 transition-colors font-medium"
           >
@@ -129,8 +162,8 @@ export default function Navbar() {
       {/* Main Navbar */}
       <motion.nav
         className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled
-            ? "bg-white/95 backdrop-blur-md shadow-lg"
-            : "bg-white shadow-sm"
+          ? "bg-white/95 backdrop-blur-md shadow-lg"
+          : "bg-white shadow-sm"
           }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -175,8 +208,8 @@ export default function Navbar() {
                       handleNavClick(item.href);
                     }}
                     className={`flex items-center gap-1 px-3 xl:px-4 py-2 font-medium transition-colors rounded-lg text-sm relative ${getIsActive(item.href)
-                        ? "text-teal-600 bg-teal-50"
-                        : "text-gray-700 hover:text-teal-600 hover:bg-teal-50"
+                      ? "text-teal-600 bg-teal-50"
+                      : "text-gray-700 hover:text-teal-600 hover:bg-teal-50"
                       }`}
                   >
                     {item.label}
@@ -223,7 +256,7 @@ export default function Navbar() {
                 </div>
               ))}
               <Button
-                onClick={() => router.push("/bookAppointment")}
+                onClick={handleBookAppointment}
                 className="ml-3 xl:ml-4 bg-teal-600 hover:bg-teal-700 text-white rounded-full px-5 xl:px-6 shadow-lg shadow-teal-200 transition-all hover:shadow-xl hover:shadow-teal-200 text-sm"
               >
                 Book Appointment
@@ -235,6 +268,7 @@ export default function Navbar() {
               onClick={() => setIsMobileOpen(!isMobileOpen)}
               className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
               aria-label="Toggle menu"
+              aria-expanded={isMobileOpen}
               suppressHydrationWarning
             >
               {isMobileOpen ? (
@@ -263,14 +297,12 @@ export default function Navbar() {
                       <a
                         href={item.href}
                         onClick={(e) => {
-                          if (!item.children) {
-                            e.preventDefault();
-                            handleNavClick(item.href);
-                          }
+                          e.preventDefault();
+                          handleNavClick(item.href);
                         }}
                         className={`flex-1 py-3 px-2 font-medium transition-colors text-sm ${getIsActive(item.href)
-                            ? "text-teal-600 bg-teal-50 rounded-lg"
-                            : "text-gray-700 hover:text-teal-600"
+                          ? "text-teal-600 bg-teal-50 rounded-lg"
+                          : "text-gray-700 hover:text-teal-600"
                           }`}
                       >
                         {item.label}
@@ -288,8 +320,8 @@ export default function Navbar() {
                         >
                           <ChevronDown
                             className={`w-4 h-4 text-gray-500 transition-transform ${mobileDropdown === item.label
-                                ? "rotate-180"
-                                : ""
+                              ? "rotate-180"
+                              : ""
                               }`}
                           />
                         </button>
@@ -321,7 +353,7 @@ export default function Navbar() {
                 ))}
                 <div className="pt-4">
                   <Button
-                    onClick={() => router.push("/bookAppointment")}
+                    onClick={handleBookAppointment}
                     className="w-full bg-teal-600 hover:bg-teal-700 text-white rounded-full py-3 shadow-lg text-sm"
                   >
                     Book Appointment

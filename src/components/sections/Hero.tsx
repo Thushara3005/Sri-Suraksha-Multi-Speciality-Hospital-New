@@ -59,8 +59,8 @@ export default function Hero() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-teal-900/92 via-teal-800/85 to-teal-700/60" />
         {/* Decorative elements */}
-        <div className="absolute top-20 right-20 w-72 h-72 bg-teal-400/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-teal-300/10 rounded-full blur-3xl" />
+        <div className="absolute top-16 right-6 sm:top-20 sm:right-20 w-32 h-32 sm:w-48 sm:h-48 lg:w-72 lg:h-72 bg-teal-400/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-12 left-4 sm:bottom-20 sm:left-20 w-40 h-40 sm:w-64 sm:h-64 lg:w-96 lg:h-96 bg-teal-300/10 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 w-full">
@@ -97,8 +97,8 @@ export default function Hero() {
             >
               Experience comprehensive healthcare with personalized attention
               at Sri Suraksha Multi Speciality Hospital, Metpally. Our expert
-              medical team is dedicated to your well-being with 12+ years of
-              clinical excellence.
+              medical team is dedicated to your well-being with 8+ years of
+              trusted clinical excellence.
             </motion.p>
 
             <motion.div
@@ -137,9 +137,9 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 1 }}
             >
               {[
-                { value: "12+", label: "Years Experience" },
+                { value: "8+", label: "Years Experience" },
                 { value: "24/7", label: "Available" },
-                { value: "4.1", label: "Google Rating" },
+                { value: "100%", label: "Patient Focus" },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}
@@ -183,14 +183,14 @@ export default function Hero() {
 
               {/* Decorative ring */}
               <motion.div
-                className="absolute -inset-3 sm:-inset-4 xl:-inset-6 rounded-full border-2 border-dashed border-teal-300/20"
+                className="absolute -inset-2 sm:-inset-3 xl:-inset-5 rounded-full border-2 border-dashed border-teal-300/20"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
               />
 
               {/* Second decorative ring */}
               <motion.div
-                className="absolute -inset-6 sm:-inset-8 xl:-inset-10 rounded-full border border-teal-300/10"
+                className="absolute -inset-4 sm:-inset-6 xl:-inset-8 rounded-full border border-teal-300/10"
                 animate={{ rotate: -360 }}
                 transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
               />
@@ -246,9 +246,9 @@ export default function Hero() {
                 </div>
                 <div>
                   <p className="text-[10px] sm:text-xs xl:text-sm font-semibold text-gray-800">
-                    4.1 Rating
+                    24/7 Care
                   </p>
-                  <p className="text-[8px] sm:text-[10px] xl:text-xs text-gray-500">Google Reviews</p>
+                  <p className="text-[8px] sm:text-[10px] xl:text-xs text-gray-500">Emergency Support</p>
                 </div>
               </motion.div>
 

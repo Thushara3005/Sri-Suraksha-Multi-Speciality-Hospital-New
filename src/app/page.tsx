@@ -130,7 +130,7 @@ export default function Home() {
     <>
       {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
       <div
-        className={`min-h-screen flex flex-col ${
+        className={`min-h-screen flex flex-col overflow-x-clip ${
           isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-300"
         }`}
         suppressHydrationWarning

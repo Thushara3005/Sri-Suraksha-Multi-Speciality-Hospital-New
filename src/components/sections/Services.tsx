@@ -105,22 +105,6 @@ function ServiceCard({ service, index, isInView }: { service: typeof services[0]
             ))}
           </div>
 
-          <a
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              const el = document.querySelector("#contact");
-              if (el) {
-                const offset = 80;
-                const top = el.getBoundingClientRect().top + window.scrollY - offset;
-                window.scrollTo({ top, behavior: "smooth" });
-              }
-            }}
-            className="inline-flex items-center gap-2 text-teal-600 font-semibold text-xs sm:text-sm group/link mt-2 hover:text-teal-700 transition-colors"
-          >
-            Learn More
-            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover/link:translate-x-1 transition-transform" />
-          </a>
         </div>
       </div>
     </motion.div>

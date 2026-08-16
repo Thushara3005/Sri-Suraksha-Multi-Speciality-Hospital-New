@@ -2,6 +2,7 @@ export const DEPARTMENTS = [
     'General Medicine',
     'Gynecology',
     'Orthopedics',
+    'General Surgery',
 ] as const
 
 export const DEFAULT_TIME_SLOTS = [
@@ -48,6 +49,16 @@ export const TRIVENI_TIME_SLOTS = [
     '06:00 PM', '06:15 PM', '06:30 PM',
 ] as const
 
+export const SUMAN_RAO_TIME_SLOTS = [
+    '10:00 AM', '10:15 AM', '10:30 AM', '10:45 AM',
+    '11:00 AM', '11:15 AM', '11:30 AM', '11:45 AM',
+    '12:00 PM', '12:15 PM', '12:30 PM', '12:45 PM',
+    '02:00 PM', '02:15 PM', '02:30 PM', '02:45 PM',
+    '03:00 PM', '03:15 PM', '03:30 PM', '03:45 PM',
+    '04:00 PM', '04:15 PM', '04:30 PM', '04:45 PM',
+    '05:00 PM', '05:15 PM',
+] as const
+
 export interface Doctor {
     name: string
     department: string
@@ -71,7 +82,7 @@ export const DOCTORS: Doctor[] = [
         department: 'Gynecology',
         qualification: 'MBBS, DGO, DNB',
         specialties: ['Gynecology', 'Infertility', 'Laparoscopic Surgery'],
-        image: '/dr-triveni-reddy.png',
+        image: '/dr-triveni-reddy-new.png',
         timeSlots: TRIVENI_TIME_SLOTS,
     },
     {
@@ -81,6 +92,14 @@ export const DOCTORS: Doctor[] = [
         specialties: ['Joint Replacement', 'Spine Surgery', 'Sports Injury'],
         image: '/dr-harikrishna.png',
         timeSlots: HARIKRISHNA_TIME_SLOTS,
+    },
+    {
+        name: 'Dr. A. Suman Rao',
+        department: 'General Surgery',
+        qualification: 'MBBS, MS (General Surgery)',
+        specialties: ['General Surgery', 'Laparoscopic Surgery', 'Hernia Surgery'],
+        image: '/dr-a-suman-rao.png',
+        timeSlots: SUMAN_RAO_TIME_SLOTS,
     },
 ]
 
@@ -92,6 +111,7 @@ export const DEPARTMENT_DOCTORS: Record<string, string[]> = {
     'General Medicine': ['Dr. G Ramesh Reddy'],
     'Gynecology': ['Dr. G Triveni Reddy'],
     'Orthopedics': ['Dr. Harikrishna'],
+    'General Surgery': ['Dr. A. Suman Rao'],
 }
 
 export const STATUS_COLORS: Record<string, string> = {

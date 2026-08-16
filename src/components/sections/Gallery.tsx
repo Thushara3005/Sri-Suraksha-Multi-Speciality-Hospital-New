@@ -2,6 +2,7 @@
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, MouseEvent } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   X,
@@ -36,11 +37,12 @@ interface GalleryItem {
   availability?: string;
   location?: string;
   rating?: number;
+  specializations?: string[];
 }
 
 const galleryImages: GalleryItem[] = [
   {
-    src: "/images/doctor-ramesh.png",
+    src: "/dr-ramesh-reddy.png",
     alt: "Dr. Ramesh Reddy",
     category: "doctors",
     info: "General Medicine | 12+ Years Experience",
@@ -53,10 +55,9 @@ const galleryImages: GalleryItem[] = [
       "Dr. Ramesh Reddy is an experienced General Physician and Diabetologist specializing in comprehensive healthcare including diabetes management, critical care, chronic disease management, preventive care, and emergency services with over 12 years of clinical expertise.",
     availability: "Available 24/7",
     location: "Sri Suraksha Multi Speciality Hospital, Metpally",
-    rating: 4.1,
   },
   {
-    src: "/images/doctor2.png",
+    src: "/dr-triveni-reddy-new.png",
     alt: "Dr. Triveni Reddy",
     category: "doctors",
     info: "Gynecology & Obstetrics | 12+ Years Experience",
@@ -69,7 +70,39 @@ const galleryImages: GalleryItem[] = [
       "Dr. Triveni Reddy is a skilled Gynecologist and Laparoscopic Surgeon specializing in women's health, infertility treatment, prenatal care, obstetrics, and reproductive health with over 12 years of clinical expertise in gynecological procedures and patient care.",
     availability: "Available 24/7",
     location: "Sri Suraksha Multi Speciality Hospital, Metpally",
-    rating: 4.1,
+  },
+  {
+    src: "/dr-harikrishna.png",
+    alt: "Dr. Harikrishna",
+    category: "doctors",
+    info: "Orthopedic & Joint Replacement Surgeon | 10+ Years Experience",
+    icon: Stethoscope,
+    name: "Dr. Harikrishna",
+    specialty: "Orthopedic & Joint Replacement Surgeon",
+    qualifications: "MBBS, MS (Orthopaedics) – Orthopedic & Joint Replacement Surgery",
+    experience: "10+ Years Experience",
+    description:
+      "Dr. Harikrishna is an experienced Orthopedic & Joint Replacement Surgeon specializing in the diagnosis and treatment of bone, joint, and musculoskeletal conditions. He provides expert care for fractures, sports injuries, arthritis, joint pain, and orthopedic conditions, with a focus on personalized treatment and patient recovery.",
+    availability: "Available 24/7",
+    location: "Sri Suraksha Multi Speciality Hospital, Metpally",
+    rating: 4.3,
+    specializations: ["Orthopaedics", "Joint Replacement", "Sports Injuries", "Fracture Treatment", "Arthroscopy"],
+  },
+  {
+    src: "/dr-a-suman-rao.png",
+    alt: "Dr. A. Suman Rao",
+    category: "doctors",
+    info: "General Surgeon | 10+ Years Experience",
+    icon: Syringe,
+    name: "Dr. A. Suman Rao",
+    specialty: "General Surgeon",
+    qualifications: "MBBS, MS (General Surgery)",
+    experience: "10+ Years Experience",
+    description:
+      "Dr. A. Suman Rao is an experienced General Surgeon specializing in the diagnosis and surgical management of a wide range of conditions. His areas of expertise include general and laparoscopic procedures, hernia and gallbladder surgery, and minor surgical treatments, with an emphasis on safe and personalized patient care.",
+    availability: "Available 24/7",
+    location: "Sri Suraksha Multi Speciality Hospital, Metpally",
+    specializations: ["General Surgery", "Laparoscopic Surgery", "Hernia Surgery", "Gallbladder Surgery", "Minor Surgical Procedures"],
   },
   {
     src: "/images/waiting-room.png",
@@ -151,25 +184,27 @@ function GalleryCard({
   return (
     <motion.div
       key={`gallery-${index}`}
-      className="perspective-1000"
+      className="perspective-1000 w-full flex justify-center"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.4, delay: index * 0.06 }}
     >
       <div
-        className="group relative rounded-xl overflow-hidden shadow-md cursor-pointer aspect-square shine-3d"
+        className="group relative w-full rounded-xl overflow-hidden shadow-md cursor-pointer aspect-square shine-3d"
         style={tiltStyle}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={handleMouseLeave}
         onClick={onClick}
       >
-        <Image
-          src={image.src}
-          alt={image.alt}
-          fill
-          className="object-cover group-hover:scale-110 transition-transform duration-700"
-        />
+        {image.src && (
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-teal-900/80 via-teal-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* 3D floating icon badge */}
@@ -217,6 +252,7 @@ function GalleryCard({
 }
 
 export default function Gallery() {
+  const router = useRouter();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [activeCategory, setActiveCategory] = useState("all");
@@ -264,27 +300,30 @@ export default function Gallery() {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
-                activeCategory === cat.id
-                  ? "bg-teal-600 text-white shadow-lg shadow-teal-200 scale-105"
-                  : "bg-white text-gray-600 hover:bg-teal-50 hover:text-teal-600 border border-gray-200 hover:border-teal-300 hover:scale-105"
-              }`}
+              className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${activeCategory === cat.id
+                ? "bg-teal-600 text-white shadow-lg shadow-teal-200 scale-105"
+                : "bg-white text-gray-600 hover:bg-teal-50 hover:text-teal-600 border border-gray-200 hover:border-teal-300 hover:scale-105"
+                }`}
             >
               {cat.label}
             </button>
           ))}
         </motion.div>
 
-        {/* Gallery Grid - Smaller thumbnails */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5 sm:gap-4">
+        {/* Gallery Grid - centered flex wrap keeps partial rows (doctors/hospital) centered */}
+        <div className="mx-auto flex w-full max-w-[1400px] flex-wrap justify-center gap-3 sm:gap-4 md:gap-5">
           {filteredImages.map((image, index) => (
-            <GalleryCard
+            <div
               key={`${activeCategory}-${index}`}
-              image={image}
-              index={index}
-              isInView={isInView}
-              onClick={() => setSelectedItem(image)}
-            />
+              className="w-[calc(50%-0.375rem)] sm:w-[calc(33.333%-0.667rem)] md:w-[calc(25%-0.9375rem)]"
+            >
+              <GalleryCard
+                image={image}
+                index={index}
+                isInView={isInView}
+                onClick={() => setSelectedItem(image)}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -327,12 +366,6 @@ export default function Gallery() {
                         ? "Doctors"
                         : "Hospital"}
                     </span>
-                    {selectedItem.rating && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
-                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                        {selectedItem.rating}
-                      </span>
-                    )}
                   </div>
 
                   {/* Name */}
@@ -419,7 +452,40 @@ export default function Gallery() {
                         </div>
                       </div>
                     )}
+
+                    {/* Rating */}
+                    {selectedItem.rating && (
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Star className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-teal-600" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-medium">
+                            Rating
+                          </p>
+                          <p className="text-sm sm:text-base text-gray-700 font-medium">
+                            {selectedItem.rating}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
+
+                  {/* Specializations */}
+                  {selectedItem.specializations && selectedItem.specializations.length > 0 && (
+                    <div className="mt-4 sm:mt-6">
+                      <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-medium mb-2">
+                        Specializations
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedItem.specializations.map((spec, idx) => (
+                          <span key={idx} className="inline-flex items-center px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-medium">
+                            {spec}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Description */}
                   {selectedItem.description && (
@@ -432,14 +498,16 @@ export default function Gallery() {
 
                   {/* CTA Button */}
                   <div className="mt-5 sm:mt-7">
-                    <a
-                      href="#contact"
+                    <button
+                      onClick={() => {
+                        setSelectedItem(null);
+                        router.push("/bookAppointment");
+                      }}
                       className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-teal-600 text-white rounded-xl text-sm font-semibold hover:bg-teal-700 transition-colors shadow-lg shadow-teal-200"
-                      onClick={() => setSelectedItem(null)}
                     >
                       <Calendar className="w-4 h-4" />
                       Book Appointment
-                    </a>
+                    </button>
                   </div>
                 </div>
 
@@ -448,13 +516,22 @@ export default function Gallery() {
                   {/* Gradient overlay for image */}
                   <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/10 z-10 pointer-events-none" />
 
-                  <Image
-                    src={selectedItem.src}
-                    alt={selectedItem.alt}
-                    fill
-                    className="object-cover object-top"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
+                  {selectedItem.src ? (
+                    <Image
+                      src={selectedItem.src}
+                      alt={selectedItem.alt}
+                      fill
+                      className="object-cover object-top"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-teal-100 to-teal-50 flex items-center justify-center">
+                      <div className="text-center">
+                        <selectedItem.icon className="w-16 h-16 text-teal-300 mx-auto mb-3" />
+                        <p className="text-teal-600 font-medium">{selectedItem.name || selectedItem.alt}</p>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Bottom gradient on image for mobile */}
                   <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent z-10 md:hidden" />

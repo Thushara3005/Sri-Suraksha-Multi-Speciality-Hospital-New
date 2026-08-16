@@ -23,12 +23,12 @@ const faqs = [
   {
     question: "Do I need to make an appointment before my visit?",
     answer:
-      "It is preferable to book an appointment in advance to minimize wait times. However, walk-ins are also accommodated. In case of emergency, please visit directly or call our reception at 9014759130.",
+      "It is preferable to book an appointment in advance to minimize wait times. However, walk-ins are also accommodated. In case of emergency, please visit directly or call our reception at 93909 89540.",
   },
   {
     question: "How can I contact the Hospital in case of emergency?",
     answer:
-      "Our hospital is open 24 hours, 7 days a week with emergency services available around the clock. You can call our reception at 9014759130 anytime. Walk-in emergencies are immediately attended to.",
+      "Our hospital is open 24 hours, 7 days a week with emergency services available around the clock. You can call our reception at 93909 89540 anytime. Walk-in emergencies are immediately attended to.",
   },
   {
     question: "Are Lab and Diagnostics services available at your hospital?",
@@ -80,11 +80,10 @@ export default function FAQ() {
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
-              className={`rounded-xl sm:rounded-2xl border transition-all duration-300 ${
-                openIndex === index
+              className={`rounded-xl sm:rounded-2xl border transition-all duration-300 ${openIndex === index
                   ? "border-teal-200 bg-teal-50/50 shadow-lg"
                   : "border-gray-100 bg-white hover:border-teal-100 hover:shadow-md"
-              }`}
+                }`}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -97,20 +96,18 @@ export default function FAQ() {
                 aria-expanded={openIndex === index}
               >
                 <span
-                  className={`font-semibold transition-colors text-sm sm:text-base ${
-                    openIndex === index
+                  className={`font-semibold transition-colors text-sm sm:text-base ${openIndex === index
                       ? "text-teal-700"
                       : "text-gray-800"
-                  }`}
+                    }`}
                 >
                   {faq.question}
                 </span>
                 <div
-                  className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
-                    openIndex === index
+                  className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${openIndex === index
                       ? "bg-teal-600 text-white rotate-0"
                       : "bg-teal-100 text-teal-600"
-                  }`}
+                    }`}
                 >
                   {openIndex === index ? (
                     <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />

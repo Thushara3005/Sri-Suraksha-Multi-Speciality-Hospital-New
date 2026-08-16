@@ -5,7 +5,6 @@ import {
   MapPin,
   Phone,
   Clock,
-  ArrowUp,
   Heart,
 } from "lucide-react";
 
@@ -13,7 +12,6 @@ const quickLinks = [
   { label: "General Medicine", href: "#services" },
   { label: "Gynecology", href: "#services" },
   { label: "Diagnostics Laboratory", href: "#services" },
-  { label: "Emergency Care", href: "#services" },
   { label: "FAQs", href: "#faq" },
   { label: "Gallery", href: "#gallery" },
   { label: "About Us", href: "#about" },
@@ -29,9 +27,7 @@ export default function Footer() {
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+
 
   return (
     <footer className="bg-gray-900 text-gray-300 relative">
@@ -92,10 +88,10 @@ export default function Footer() {
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-teal-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <a
-                    href="tel:+919014759130"
+                    href="tel:+919390989540"
                     className="hover:text-teal-400 transition-colors text-xs sm:text-sm"
                   >
-                    9014759130
+                    93909 89540
                   </a>
                 </div>
               </div>
@@ -121,17 +117,14 @@ export default function Footer() {
                 Telangana
               </p>
             </div>
-            {/* Map embed placeholder */}
-            <div className="rounded-xl overflow-hidden border border-gray-700 h-32 sm:h-40 bg-gray-800 flex items-center justify-center">
-              <a
-                href="https://maps.google.com/?q=Sri+Suraksha+Multi+Speciality+Hospital+Metpally+Main+Rd+near+Old+Bus+Stop+Metpally+Telangana+505325"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-teal-400 hover:text-teal-300 transition-colors text-xs sm:text-sm"
-              >
-                <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                View on Google Maps
-              </a>
+            <div className="rounded-xl overflow-hidden border border-gray-700 h-32 sm:h-40 bg-gray-800">
+              <iframe
+                title="Sri Suraksha Hospital Location"
+                src="https://www.google.com/maps?q=Sri%20Suraksha%20Multi%20Speciality%20Hospital%20Metpally%20Telangana&output=embed"
+                className="w-full h-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
         </div>
@@ -146,13 +139,7 @@ export default function Footer() {
             <Heart className="w-2.5 h-2.5 sm:w-3 sm:h-3 inline text-red-500 fill-red-500" /> for
             better healthcare.
           </p>
-          <button
-            onClick={scrollToTop}
-            className="w-9 h-9 sm:w-10 sm:h-10 bg-teal-600 hover:bg-teal-700 rounded-full flex items-center justify-center transition-colors shadow-lg"
-            aria-label="Scroll to top"
-          >
-            <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-          </button>
+
         </div>
       </div>
     </footer>

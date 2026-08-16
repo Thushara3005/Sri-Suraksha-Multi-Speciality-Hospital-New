@@ -227,6 +227,71 @@ export function BookingForm() {
 
     const [submitError, setSubmitError] = useState('')
 
+    const handleGetLocation = useCallback(() => {
+        if (!navigator.geolocation) {
+            setSubmitError('Geolocation is not supported by your browser.')
+            return
+        }
+
+        setIsSubmitting(true)
+        setSubmitError('')
+
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords
+
+                try {
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                    )
+
+                    if (!response.ok) {
+                        throw new Error('Failed to get address')
+                    }
+
+                    const data = await response.json()
+                    const address = data.address
+
+                    const locationString = [
+                        address.city || address.town || address.village || '',
+                        address.state || '',
+                    ]
+                        .filter(Boolean)
+                        .join(', ')
+
+                    if (locationString) {
+                        form.setValue('place', locationString)
+                        setSubmitError('')
+                    } else {
+                        setSubmitError('Could not determine your address. Please enter it manually.')
+                    }
+                } catch (error) {
+                    setSubmitError('Failed to retrieve address. Please try again or enter manually.')
+                    console.error('Reverse geocoding error:', error)
+                } finally {
+                    setIsSubmitting(false)
+                }
+            },
+            (error) => {
+                setIsSubmitting(false)
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        setSubmitError('Location permission denied. Please enable it in your browser settings.')
+                        break
+                    case error.POSITION_UNAVAILABLE:
+                        setSubmitError('Location information is unavailable.')
+                        break
+                    case error.TIMEOUT:
+                        setSubmitError('Location request timed out.')
+                        break
+                    default:
+                        setSubmitError('Unable to retrieve your location.')
+                }
+                console.error('Geolocation error:', error)
+            }
+        )
+    }, [form])
+
     const handleWhatsAppSubmit = async () => {
         const valid = await form.trigger()
         if (!valid) return
@@ -406,383 +471,383 @@ export function BookingForm() {
 
             <div className="relative mx-auto -mt-1 max-w-[1100px] px-4 pb-10 pt-2 sm:px-6 lg:px-8">
                 <ProgressStepper currentStep={computedStep} />
+                <div className="rounded-[18px] bg-[#f5f6f7] p-4 shadow-sm ring-1 ring-slate-200/80 sm:p-6 lg:p-8">                <Form {...form}>
+                    <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                        <div>
+                            <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.12em] text-[#1f2937] sm:text-[12px]">
+                                Select Department <span className="text-red-500">*</span>
+                            </label>
+                            <FormField
+                                control={form.control}
+                                name="department"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Select
+                                            onValueChange={(val) => {
+                                                field.onChange(val)
+                                                setSelectedDepartment(val)
+                                                setSelectedDoctor('')
+                                                form.setValue('doctor', '')
+                                            }}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className="h-12 w-full rounded-xl border border-[#dfe3e8] bg-white text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0">
+                                                    <SelectValue placeholder="Select Department" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {DEPARTMENTS.map((dept) => (
+                                                    <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
 
-                <div className="rounded-[18px] bg-[#f5f6f7] p-4 shadow-sm ring-1 ring-slate-200/80 sm:p-6 lg:p-8">
-                    <Form {...form}>
-                        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                        {selectedDepartment && (
                             <div>
                                 <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.12em] text-[#1f2937] sm:text-[12px]">
-                                    Select Department <span className="text-red-500">*</span>
+                                    Select Doctor <span className="text-red-500">*</span>
                                 </label>
                                 <FormField
                                     control={form.control}
-                                    name="department"
+                                    name="doctor"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <Select
-                                                onValueChange={(val) => {
-                                                    field.onChange(val)
-                                                    setSelectedDepartment(val)
-                                                    setSelectedDoctor('')
-                                                    form.setValue('doctor', '')
-                                                }}
-                                                defaultValue={field.value}
-                                            >
+                                            <div className="space-y-3">
+                                                {doctors.map((doc) => {
+                                                    const isSelected = selectedDoctor === doc.name
+                                                    return (
+                                                        <button
+                                                            key={doc.name}
+                                                            type="button"
+                                                            onClick={() => {
+                                                                field.onChange(doc.name)
+                                                                setSelectedDoctor(doc.name)
+                                                                setSelectedTime('')
+                                                                form.setValue('preferredTime', '')
+                                                            }}
+                                                            className={`flex w-full items-center gap-3 rounded-xl border-2 p-3 text-left transition-all ${isSelected
+                                                                ? 'border-[#10b981] bg-[#ecfdf5] shadow-sm'
+                                                                : 'border-[#e5e7eb] bg-white hover:border-[#cbd5e1]'
+                                                                }`}
+                                                        >
+                                                            <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[#dfe3e8] bg-gradient-to-br from-[#dbeafe] to-[#bfdbfe]">
+                                                                <Image src={doc.image} alt={doc.name} fill sizes="48px" className="object-cover object-top" />
+                                                            </div>
+                                                            <div className="min-w-0 flex-1">
+                                                                <div className="text-sm font-semibold text-[#1a3b5c]">{doc.name}</div>
+                                                                <div className="mt-0.5 text-[11px] text-[#6b7280]">{doc.qualification}</div>
+                                                                <div className="mt-1 text-[11px] text-[#4b5563]">{doc.specialties.join(' • ')}</div>
+                                                            </div>
+                                                        </button>
+                                                    )
+                                                })}
+                                            </div>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
+
+                        {watchDept && watchDoc && (
+                            <div>
+                                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.12em] text-[#1f2937] sm:text-[12px]">
+                                    Select Preferred Date <span className="text-red-500">*</span>
+                                </label>
+                                <FormField
+                                    control={form.control}
+                                    name="preferredDate"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <div className="relative">
                                                 <FormControl>
-                                                    <SelectTrigger className="h-12 w-full rounded-xl border border-[#dfe3e8] bg-white text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0">
-                                                        <SelectValue placeholder="Select Department" />
-                                                    </SelectTrigger>
+                                                    <Input
+                                                        ref={dateInputRef}
+                                                        type="date"
+                                                        min={minDate}
+                                                        max={maxDate}
+                                                        value={field.value}
+                                                        onChange={(e) => {
+                                                            field.onChange(e.target.value)
+                                                            setSelectedTime('')
+                                                            form.setValue('preferredTime', '')
+                                                        }}
+                                                        className="h-12 w-full rounded-xl border border-[#dfe3e8] bg-white pr-11 text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0"
+                                                    />
                                                 </FormControl>
-                                                <SelectContent>
-                                                    {DEPARTMENTS.map((dept) => (
-                                                        <SelectItem key={dept} value={dept}>{dept}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex w-12 items-center justify-center text-[#6b7280]">
+                                                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
+                                                        <path d="M7 2.75v3.5M17 2.75v3.5M3.5 8.5h17M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 19V7A1.5 1.5 0 0 1 5 5.5Z" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
+
+                        {watchDate && watchDoc && (
+                            <div>
+                                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.12em] text-[#1f2937] sm:text-[12px]">
+                                    Available Time Slots <span className="text-red-500">*</span>
+                                </label>
+                                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-6">
+                                    {DEFAULT_TIME_SLOTS.map((slot) => {
+                                        const past = isSlotPast(slot)
+                                        const booked = isSlotBooked(slot)
+                                        const disabled = past || booked
+                                        const selected = selectedTime === slot || watchTime === slot
+                                        return (
+                                            <button
+                                                key={slot}
+                                                type="button"
+                                                onClick={() => {
+                                                    if (disabled) return
+                                                    setSelectedTime(slot)
+                                                    form.setValue('preferredTime', slot)
+                                                }}
+                                                disabled={disabled}
+                                                className={`h-10 rounded-lg border text-xs font-medium transition-all duration-200 ${booked
+                                                    ? 'cursor-not-allowed border-[#f7c7d2] bg-[#fff1f2] text-[#c55d6d] line-through'
+                                                    : selected
+                                                        ? 'border-[#10b981] bg-[#10b981] text-white shadow-sm'
+                                                        : 'border-[#5ecb9a] bg-white text-[#0f172a] hover:-translate-y-0.5 hover:border-[#10b981] hover:bg-[#10b981] hover:text-white hover:shadow-md'
+                                                    } ${past ? 'cursor-not-allowed border-[#dfe3e8] bg-[#f3f4f6] text-[#c4c7cd] line-through' : ''}`}
+                                            >
+                                                {slot}
+                                            </button>
+                                        )
+                                    })}
+                                </div>
+
+                                <div className="mt-4 flex flex-wrap items-center gap-4 text-[11px] text-[#475569]">
+                                    <span className="inline-flex items-center gap-2">
+                                        <span className="h-3 w-3 rounded-full border border-[#5ecb9a] bg-white" />
+                                        Available
+                                    </span>
+                                    <span className="inline-flex items-center gap-2">
+                                        <span className="h-3 w-3 rounded-full bg-[#10b981]" />
+                                        Selected
+                                    </span>
+                                    <span className="inline-flex items-center gap-2">
+                                        <span className="h-3 w-3 rounded-full border border-[#f7c7d2] bg-[#fff1f2]" />
+                                        Booked
+                                    </span>
+                                </div>
+
+                                <p className="mt-3 text-left text-[11px] leading-relaxed text-[#f59e0b]">
+                                    * In emergency cases, the doctor may vary by 5 to 10 minutes from the scheduled time.
+                                </p>
+                            </div>
+                        )}
+
+                        <div className="pt-2">
+                            <div className="mb-5 h-px w-full bg-[#e5e7eb]" />
+                            <h3 className="mb-4 text-[11px] font-black uppercase tracking-[0.12em] text-[#1f2937] sm:text-[12px]">
+                                Your Details
+                            </h3>
+
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                                <div>
+                                    <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
+                                        Full Name <span className="text-red-500">*</span>
+                                    </label>
+                                    <FormField
+                                        control={form.control}
+                                        name="patientName"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input {...field} placeholder="Enter your full name" className="h-12 rounded-xl border border-[#dfe3e8] bg-white text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0" />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
+                                        Mobile Number <span className="text-red-500">*</span>
+                                    </label>
+                                    <FormField
+                                        control={form.control}
+                                        name="phoneNumber"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className="relative">
+                                                    <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-[#64748b]">+91</span>
+                                                    <FormControl>
+                                                        <Input
+                                                            {...field}
+                                                            value={field.value ?? ''}
+                                                            onChange={(e) => {
+                                                                const sanitized = e.target.value.replace(/\D/g, '').slice(0, 10)
+                                                                field.onChange(sanitized)
+                                                            }}
+                                                            onPaste={(e) => {
+                                                                const pasted = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 10)
+                                                                if (!pasted) {
+                                                                    e.preventDefault()
+                                                                    return
+                                                                }
+                                                                e.preventDefault()
+                                                                field.onChange(pasted)
+                                                            }}
+                                                            placeholder="10-digit number"
+                                                            maxLength={10}
+                                                            inputMode="numeric"
+                                                            pattern="[0-9]*"
+                                                            className="h-12 rounded-xl border border-[#dfe3e8] bg-white pl-12 text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0"
+                                                        />
+                                                    </FormControl>
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+                                <div>
+                                    <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
+                                        Age (Optional)
+                                    </label>
+                                    <FormField
+                                        control={form.control}
+                                        name="age"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input {...field} placeholder="Enter age" className="h-12 rounded-xl border border-[#dfe3e8] bg-white text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0" />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
+                                        Gender <span className="text-red-500">*</span>
+                                    </label>
+                                    <FormField
+                                        control={form.control}
+                                        name="gender"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger className="h-12 w-full rounded-xl border border-[#dfe3e8] bg-white text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0">
+                                                            <SelectValue placeholder="Select gender" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        <SelectItem value="Male">Male</SelectItem>
+                                                        <SelectItem value="Female">Female</SelectItem>
+                                                        <SelectItem value="Other">Other</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mt-5">
+                                <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
+                                    Place (Optional)
+                                </label>
+                                <FormField
+                                    control={form.control}
+                                    name="place"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <div className="relative">
+                                                <FormControl>
+                                                    <Input
+                                                        {...field}
+                                                        placeholder="Enter your city or locality"
+                                                        className="h-12 w-full rounded-xl border border-[#dfe3e8] bg-white pr-12 text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0"
+                                                    />
+                                                </FormControl>
+                                                <button
+                                                    type="button"
+                                                    onClick={handleGetLocation}
+                                                    disabled={isSubmitting}
+                                                    aria-label="Use current location"
+                                                    className="absolute inset-y-1.5 right-1.5 flex h-9 w-9 items-center justify-center rounded-lg border border-[#7dd3af] bg-[#ecfdf5] text-[#10b981] shadow-sm hover:bg-[#d1fae5] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+                                                >
+                                                    <MapPin className="h-4 w-4" />
+                                                </button>
+                                            </div>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
                             </div>
 
-                            {selectedDepartment && (
-                                <div>
-                                    <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.12em] text-[#1f2937] sm:text-[12px]">
-                                        Select Doctor <span className="text-red-500">*</span>
-                                    </label>
-                                    <FormField
-                                        control={form.control}
-                                        name="doctor"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <div className="space-y-3">
-                                                    {doctors.map((doc) => {
-                                                        const isSelected = selectedDoctor === doc.name
-                                                        return (
-                                                            <button
-                                                                key={doc.name}
-                                                                type="button"
-                                                                onClick={() => {
-                                                                    field.onChange(doc.name)
-                                                                    setSelectedDoctor(doc.name)
-                                                                    setSelectedTime('')
-                                                                    form.setValue('preferredTime', '')
-                                                                }}
-                                                                className={`flex w-full items-center gap-3 rounded-xl border-2 p-3 text-left transition-all ${isSelected
-                                                                    ? 'border-[#10b981] bg-[#ecfdf5] shadow-sm'
-                                                                    : 'border-[#e5e7eb] bg-white hover:border-[#cbd5e1]'
-                                                                    }`}
-                                                            >
-                                                                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[#dfe3e8] bg-gradient-to-br from-[#dbeafe] to-[#bfdbfe]">
-                                                                    <Image src={doc.image} alt={doc.name} fill sizes="48px" className="object-cover object-top" />
-                                                                </div>
-                                                                <div className="min-w-0 flex-1">
-                                                                    <div className="text-sm font-semibold text-[#1a3b5c]">{doc.name}</div>
-                                                                    <div className="mt-0.5 text-[11px] text-[#6b7280]">{doc.qualification}</div>
-                                                                    <div className="mt-1 text-[11px] text-[#4b5563]">{doc.specialties.join(' • ')}</div>
-                                                                </div>
-                                                            </button>
-                                                        )
-                                                    })}
-                                                </div>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            )}
-
-                            {watchDept && watchDoc && (
-                                <div>
-                                    <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.12em] text-[#1f2937] sm:text-[12px]">
-                                        Select Preferred Date <span className="text-red-500">*</span>
-                                    </label>
-                                    <FormField
-                                        control={form.control}
-                                        name="preferredDate"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <div className="relative">
-                                                    <FormControl>
-                                                        <Input
-                                                            ref={dateInputRef}
-                                                            type="date"
-                                                            min={minDate}
-                                                            max={maxDate}
-                                                            value={field.value}
-                                                            onChange={(e) => {
-                                                                field.onChange(e.target.value)
-                                                                setSelectedTime('')
-                                                                form.setValue('preferredTime', '')
-                                                            }}
-                                                            className="h-12 w-full rounded-xl border border-[#dfe3e8] bg-white pr-11 text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0"
-                                                        />
-                                                    </FormControl>
-                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex w-12 items-center justify-center text-[#6b7280]">
-                                                        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
-                                                            <path d="M7 2.75v3.5M17 2.75v3.5M3.5 8.5h17M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 19V7A1.5 1.5 0 0 1 5 5.5Z" />
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            )}
-
-                            {watchDate && watchDoc && (
-                                <div>
-                                    <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.12em] text-[#1f2937] sm:text-[12px]">
-                                        Available Time Slots <span className="text-red-500">*</span>
-                                    </label>
-                                    <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-6">
-                                        {DEFAULT_TIME_SLOTS.map((slot) => {
-                                            const past = isSlotPast(slot)
-                                            const booked = isSlotBooked(slot)
-                                            const disabled = past || booked
-                                            const selected = selectedTime === slot || watchTime === slot
-                                            return (
-                                                <button
-                                                    key={slot}
-                                                    type="button"
-                                                    onClick={() => {
-                                                        if (disabled) return
-                                                        setSelectedTime(slot)
-                                                        form.setValue('preferredTime', slot)
-                                                    }}
-                                                    disabled={disabled}
-                                                    className={`h-10 rounded-lg border text-xs font-medium transition-all duration-200 ${booked
-                                                        ? 'cursor-not-allowed border-[#f7c7d2] bg-[#fff1f2] text-[#c55d6d] line-through'
-                                                        : selected
-                                                            ? 'border-[#10b981] bg-[#10b981] text-white shadow-sm'
-                                                            : 'border-[#5ecb9a] bg-white text-[#0f172a] hover:-translate-y-0.5 hover:border-[#10b981] hover:bg-[#10b981] hover:text-white hover:shadow-md'
-                                                        } ${past ? 'cursor-not-allowed border-[#dfe3e8] bg-[#f3f4f6] text-[#c4c7cd] line-through' : ''}`}
-                                                >
-                                                    {slot}
-                                                </button>
-                                            )
-                                        })}
-                                    </div>
-
-                                    <div className="mt-4 flex flex-wrap items-center gap-4 text-[11px] text-[#475569]">
-                                        <span className="inline-flex items-center gap-2">
-                                            <span className="h-3 w-3 rounded-full border border-[#5ecb9a] bg-white" />
-                                            Available
-                                        </span>
-                                        <span className="inline-flex items-center gap-2">
-                                            <span className="h-3 w-3 rounded-full bg-[#10b981]" />
-                                            Selected
-                                        </span>
-                                        <span className="inline-flex items-center gap-2">
-                                            <span className="h-3 w-3 rounded-full border border-[#f7c7d2] bg-[#fff1f2]" />
-                                            Booked
-                                        </span>
-                                    </div>
-
-                                    <p className="mt-3 text-left text-[11px] leading-relaxed text-[#f59e0b]">
-                                        * In emergency cases, the doctor may vary by 5 to 10 minutes from the scheduled time.
-                                    </p>
-                                </div>
-                            )}
-
-                            <div className="pt-2">
-                                <div className="mb-5 h-px w-full bg-[#e5e7eb]" />
-                                <h3 className="mb-4 text-[11px] font-black uppercase tracking-[0.12em] text-[#1f2937] sm:text-[12px]">
-                                    Your Details
-                                </h3>
-
-                                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                                    <div>
-                                        <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
-                                            Full Name <span className="text-red-500">*</span>
-                                        </label>
-                                        <FormField
-                                            control={form.control}
-                                            name="patientName"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormControl>
-                                                        <Input {...field} placeholder="Enter your full name" className="h-12 rounded-xl border border-[#dfe3e8] bg-white text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0" />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
-                                            Mobile Number <span className="text-red-500">*</span>
-                                        </label>
-                                        <FormField
-                                            control={form.control}
-                                            name="phoneNumber"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <div className="relative">
-                                                        <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-[#64748b]">+91</span>
-                                                        <FormControl>
-                                                            <Input
-                                                                {...field}
-                                                                value={field.value ?? ''}
-                                                                onChange={(e) => {
-                                                                    const sanitized = e.target.value.replace(/\D/g, '').slice(0, 10)
-                                                                    field.onChange(sanitized)
-                                                                }}
-                                                                onPaste={(e) => {
-                                                                    const pasted = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 10)
-                                                                    if (!pasted) {
-                                                                        e.preventDefault()
-                                                                        return
-                                                                    }
-                                                                    e.preventDefault()
-                                                                    field.onChange(pasted)
-                                                                }}
-                                                                placeholder="10-digit number"
-                                                                maxLength={10}
-                                                                inputMode="numeric"
-                                                                pattern="[0-9]*"
-                                                                className="h-12 rounded-xl border border-[#dfe3e8] bg-white pl-12 text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0"
-                                                            />
-                                                        </FormControl>
-                                                    </div>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
-                                    <div>
-                                        <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
-                                            Age (Optional)
-                                        </label>
-                                        <FormField
-                                            control={form.control}
-                                            name="age"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormControl>
-                                                        <Input {...field} placeholder="Enter age" className="h-12 rounded-xl border border-[#dfe3e8] bg-white text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0" />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
-                                            Gender <span className="text-red-500">*</span>
-                                        </label>
-                                        <FormField
-                                            control={form.control}
-                                            name="gender"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                        <FormControl>
-                                                            <SelectTrigger className="h-12 w-full rounded-xl border border-[#dfe3e8] bg-white text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0">
-                                                                <SelectValue placeholder="Select gender" />
-                                                            </SelectTrigger>
-                                                        </FormControl>
-                                                        <SelectContent>
-                                                            <SelectItem value="Male">Male</SelectItem>
-                                                            <SelectItem value="Female">Female</SelectItem>
-                                                            <SelectItem value="Other">Other</SelectItem>
-                                                        </SelectContent>
-                                                    </Select>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="mt-5">
-                                    <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
-                                        Place (Optional)
-                                    </label>
-                                    <FormField
-                                        control={form.control}
-                                        name="place"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <div className="relative">
-                                                    <FormControl>
-                                                        <Input
-                                                            {...field}
-                                                            placeholder="Enter your city or locality"
-                                                            className="h-12 w-full rounded-xl border border-[#dfe3e8] bg-white pr-12 text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0"
-                                                        />
-                                                    </FormControl>
-                                                    <button
-                                                        type="button"
-                                                        aria-label="Use current location"
-                                                        className="absolute inset-y-1.5 right-1.5 flex h-9 w-9 items-center justify-center rounded-lg border border-[#7dd3af] bg-[#ecfdf5] text-[#10b981] shadow-sm"
-                                                    >
-                                                        <MapPin className="h-4 w-4" />
-                                                    </button>
-                                                </div>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-
-                                <div className="mt-5">
-                                    <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
-                                        Reason for Visit (Optional)
-                                    </label>
-                                    <FormField
-                                        control={form.control}
-                                        name="message"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Textarea
-                                                        {...field}
-                                                        placeholder="Briefly describe your symptoms or reason for visit..."
-                                                        className="min-h-[110px] w-full resize-none rounded-xl border border-[#dfe3e8] bg-white text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0"
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
+                            <div className="mt-5">
+                                <label className="mb-2 block text-[11px] font-bold text-[#1f2937] sm:text-[12px]">
+                                    Reason for Visit (Optional)
+                                </label>
+                                <FormField
+                                    control={form.control}
+                                    name="message"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <Textarea
+                                                    {...field}
+                                                    placeholder="Briefly describe your symptoms or reason for visit..."
+                                                    className="min-h-[110px] w-full resize-none rounded-xl border border-[#dfe3e8] bg-white text-sm text-[#334155] shadow-sm transition focus:border-[#10b981] focus:ring-0"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
+                        </div>
 
-                            {submitError && (
-                                <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                                    {submitError}
-                                </div>
+                        {submitError && (
+                            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                                {submitError}
+                            </div>
+                        )}
+
+                        <Button
+                            type="button"
+                            onClick={handleWhatsAppSubmit}
+                            disabled={isSubmitting || !isPhoneComplete}
+                            className="mt-2 h-12 w-full rounded-xl bg-[#22c55e] text-base font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#16a34a] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                            {isSubmitting ? (
+                                <span className="inline-flex items-center gap-2">
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    Submitting...
+                                </span>
+                            ) : (
+                                <span className="inline-flex items-center justify-center gap-2">
+                                    <MessageCircle className="h-4 w-4" />
+                                    Book & Open WhatsApp
+                                </span>
                             )}
-
-                            <Button
-                                type="button"
-                                onClick={handleWhatsAppSubmit}
-                                disabled={isSubmitting || !isPhoneComplete}
-                                className="mt-2 h-12 w-full rounded-xl bg-[#22c55e] text-base font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#16a34a] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
-                            >
-                                {isSubmitting ? (
-                                    <span className="inline-flex items-center gap-2">
-                                        <Loader2 className="h-4 w-4 animate-spin" />
-                                        Submitting...
-                                    </span>
-                                ) : (
-                                    <span className="inline-flex items-center justify-center gap-2">
-                                        <MessageCircle className="h-4 w-4" />
-                                        Book & Open WhatsApp
-                                    </span>
-                                )}
-                            </Button>
-                        </form>
-                    </Form>
+                        </Button>
+                    </form>
+                </Form>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
