@@ -3,7 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-import { ArrowRight, Heart, Stethoscope, Microscope } from "lucide-react";
+import { Heart, Stethoscope, Microscope, Bone, Syringe } from "lucide-react";
 import { useTilt3D } from "@/hooks/use-tilt-3d";
 
 const services = [
@@ -44,6 +44,32 @@ const services = [
       "Ultrasound & Imaging",
       "Health Screening Packages",
       "Emergency Diagnostics",
+    ],
+  },
+  {
+    title: "Orthopedics",
+    description:
+      "Expert orthopedic and joint replacement care by Dr. Harikrishna (MBBS, MS Ortho) specializing in fractures, sports injuries, arthritis, joint pain, and musculoskeletal conditions.",
+    image: "/images/service-orthopedics.png",
+    icon: Bone,
+    features: [
+      "Joint Replacement",
+      "Sports Injuries",
+      "Fracture Treatment",
+      "Arthroscopy",
+    ],
+  },
+  {
+    title: "General Surgery",
+    description:
+      "Comprehensive surgical care by Dr. A. Suman Rao (MBBS, MS General Surgery) including general and laparoscopic procedures, hernia and gallbladder surgery.",
+    image: "/images/service-general-surgery.png",
+    icon: Syringe,
+    features: [
+      "Laparoscopic Surgery",
+      "Hernia Surgery",
+      "Gallbladder Surgery",
+      "Minor Surgical Procedures",
     ],
   },
 ];
@@ -137,7 +163,7 @@ export default function Services() {
             <span className="gradient-text">Personalized Care</span>
           </h2>
           <p className="text-gray-600 text-sm sm:text-base lg:text-lg mt-3 sm:mt-4 leading-relaxed">
-            We offer comprehensive medical services including General Medicine, Gynecology, and Diagnostics Laboratory, tailored to meet your health needs with the highest standard of care.
+            We offer comprehensive medical services including General Medicine, Gynecology, Diagnostics Laboratory, Orthopedics, and General Surgery, tailored to meet your health needs with the highest standard of care.
           </p>
         </motion.div>
 

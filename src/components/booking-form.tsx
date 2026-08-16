@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useRef, Fragment } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -72,9 +72,93 @@ type BookingFormData = z.infer<typeof bookingSchema>
 const STEPS = ['Department & Doctor', 'Schedule', 'Your Details']
 
 function ProgressStepper({ currentStep }: { currentStep: number }) {
+    const renderStepCircle = (
+        stepNum: number,
+        isCompleted: boolean,
+        isCurrent: boolean,
+        size: 'mobile' | 'desktop' = 'desktop'
+    ) => (
+        <div
+            className={`flex items-center justify-center rounded-full font-bold transition-colors ${size === 'mobile'
+                ? 'h-7 w-7 text-[11px]'
+                : 'h-8 w-8 text-xs'
+                } ${isCompleted || isCurrent
+                    ? 'bg-[#10b981] text-white shadow-sm'
+                    : 'bg-[#e5e7eb] text-[#9ca3af]'
+                }`}
+        >
+            {isCompleted ? (
+                <CheckCircle2 className={size === 'mobile' ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
+            ) : (
+                stepNum
+            )}
+        </div>
+    )
+
+    const renderStepLabel = (
+        step: string,
+        isCompleted: boolean,
+        isCurrent: boolean,
+        mobile = false
+    ) => (
+        <span
+            className={`font-medium ${mobile
+                ? 'mt-2 block px-0.5 text-center text-[9px] leading-[1.2] whitespace-normal'
+                : 'mt-2 whitespace-nowrap text-[10px] sm:text-[11px]'
+                } ${isCurrent
+                    ? 'text-[#10b981]'
+                    : isCompleted
+                        ? 'text-[#6b7280]'
+                        : 'text-[#94a3b8]'
+                }`}
+        >
+            {step}
+        </span>
+    )
+
     return (
         <div className="w-full max-w-[620px] mx-auto mb-8 sm:mb-10">
-            <div className="flex items-start justify-center">
+            {/* Mobile: circles + connectors on one row, labels on a separate row */}
+            <div className="w-full px-0.5 sm:hidden">
+                <div className="flex w-full items-center">
+                    {STEPS.map((step, i) => {
+                        const stepNum = i + 1
+                        const isCompleted = stepNum < currentStep
+                        const isCurrent = stepNum === currentStep
+                        const isLast = i === STEPS.length - 1
+
+                        return (
+                            <Fragment key={step}>
+                                <div className="flex min-w-0 flex-1 justify-center">
+                                    {renderStepCircle(stepNum, isCompleted, isCurrent, 'mobile')}
+                                </div>
+                                {!isLast && (
+                                    <div
+                                        className={`mx-0.5 h-[2px] min-w-[6px] max-w-[28px] flex-[0.45] shrink self-center ${stepNum < currentStep ? 'bg-[#10b981]' : 'bg-[#e5e7eb]'
+                                            }`}
+                                    />
+                                )}
+                            </Fragment>
+                        )
+                    })}
+                </div>
+                <div className="grid grid-cols-3 gap-x-0.5">
+                    {STEPS.map((step, i) => {
+                        const stepNum = i + 1
+                        const isCompleted = stepNum < currentStep
+                        const isCurrent = stepNum === currentStep
+
+                        return (
+                            <div key={`${step}-label`} className="min-w-0">
+                                {renderStepLabel(step, isCompleted, isCurrent, true)}
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+
+            {/* Desktop/tablet — unchanged */}
+            <div className="hidden items-start justify-center sm:flex">
                 {STEPS.map((step, i) => {
                     const stepNum = i + 1
                     const isCompleted = stepNum < currentStep
@@ -85,21 +169,9 @@ function ProgressStepper({ currentStep }: { currentStep: number }) {
                         <div key={step} className="flex items-start flex-1 justify-center min-w-0">
                             <div className="flex flex-col items-center min-w-0">
                                 <div className="flex items-center">
-                                    <div
-                                        className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${isCompleted || isCurrent
-                                            ? 'bg-[#10b981] text-white shadow-sm'
-                                            : 'bg-[#e5e7eb] text-[#9ca3af]'
-                                            }`}
-                                    >
-                                        {isCompleted ? <CheckCircle2 className="w-4 h-4" /> : stepNum}
-                                    </div>
+                                    {renderStepCircle(stepNum, isCompleted, isCurrent)}
                                 </div>
-                                <span
-                                    className={`mt-2 text-[10px] sm:text-[11px] font-medium whitespace-nowrap ${isCurrent ? 'text-[#10b981]' : isCompleted ? 'text-[#6b7280]' : 'text-[#94a3b8]'
-                                        }`}
-                                >
-                                    {step}
-                                </span>
+                                {renderStepLabel(step, isCompleted, isCurrent)}
                             </div>
                             {!isLast && (
                                 <div className="flex items-center pt-4 px-2 sm:px-4">

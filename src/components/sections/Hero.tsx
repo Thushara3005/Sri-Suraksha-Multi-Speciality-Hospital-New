@@ -74,7 +74,7 @@ export default function Hero() {
             >
               <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-teal-100 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium border border-white/20 animate-border-glow-3d">
                 <span className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
-                Trusted Healthcare Since 2012
+                Trusted Healthcare Since 2018
               </span>
             </motion.div>
 

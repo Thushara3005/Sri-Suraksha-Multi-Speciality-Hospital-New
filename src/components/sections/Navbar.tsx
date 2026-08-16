@@ -7,8 +7,6 @@ import {
   Menu,
   X,
   Phone,
-  ChevronDown,
-  ChevronRight,
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -17,15 +15,7 @@ import { Button } from "@/components/ui/button";
 const navItems = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  {
-    label: "Services",
-    href: "#services",
-    children: [
-      { label: "General Medicine", href: "#services" },
-      { label: "Gynecology", href: "#services" },
-      { label: "Diagnostics Laboratory", href: "#services" },
-    ],
-  },
+  { label: "Services", href: "#services" },
   { label: "Gallery", href: "#gallery" },
   { label: "FAQs", href: "#faq" },
   { label: "Contact", href: "#contact" },
@@ -35,8 +25,6 @@ export default function Navbar() {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState("home");
   const [isMounted, setIsMounted] = useState(false);
 
@@ -90,7 +78,6 @@ export default function Navbar() {
 
   const closeMobile = useCallback(() => {
     setIsMobileOpen(false);
-    setMobileDropdown(null);
   }, []);
 
   const scrollToSectionMobile = useCallback((href: string) => {
@@ -245,14 +232,7 @@ export default function Navbar() {
             {/* Desktop Nav */}
             <div className="hidden lg:flex items-center gap-1">
               {navItems.map((item) => (
-                <div
-                  key={item.label}
-                  className="relative"
-                  onMouseEnter={() =>
-                    item.children && setActiveDropdown(item.label)
-                  }
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
+                <div key={item.label} className="relative">
                   <a
                     href={item.href}
                     onClick={(e) => {
@@ -265,9 +245,6 @@ export default function Navbar() {
                       }`}
                   >
                     {item.label}
-                    {item.children && (
-                      <ChevronDown className="w-4 h-4" />
-                    )}
                     {getIsActive(item.href) && (
                       <motion.div
                         layoutId="activeNav"
@@ -276,35 +253,6 @@ export default function Navbar() {
                       />
                     )}
                   </a>
-
-                  {/* Dropdown */}
-                  <AnimatePresence>
-                    {item.children && activeDropdown === item.label && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50"
-                      >
-                        {item.children.map((child) => (
-                          <a
-                            key={child.label}
-                            href={child.href}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleNavClick(child.href);
-                              setActiveDropdown(null);
-                            }}
-                            className="flex items-center gap-2 px-4 py-3 text-gray-600 hover:text-teal-600 hover:bg-teal-50 transition-colors text-sm"
-                          >
-                            <ChevronRight className="w-3 h-3" />
-                            {child.label}
-                          </a>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
               ))}
               <Button
@@ -346,64 +294,20 @@ export default function Navbar() {
                 >
                   <div className="max-h-[calc(100vh-4rem)] space-y-1 overflow-y-auto px-4 py-4 sm:max-h-[calc(100vh-4.5rem)]">
                     {navItems.map((item) => (
-                      <div key={item.label}>
-                        <div className="flex items-center justify-between">
-                          <a
-                            href={item.href}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleNavClick(item.href);
-                            }}
-                            className={`flex-1 py-3 px-2 font-medium transition-colors text-sm ${getIsActive(item.href)
-                              ? "text-teal-600 bg-teal-50 rounded-lg"
-                              : "text-gray-700 hover:text-teal-600"
-                              }`}
-                          >
-                            {item.label}
-                          </a>
-                          {item.children && (
-                            <button
-                              onClick={() =>
-                                setMobileDropdown(
-                                  mobileDropdown === item.label
-                                    ? null
-                                    : item.label
-                                )
-                              }
-                              className="p-2 hover:bg-gray-100 rounded-lg"
-                            >
-                              <ChevronDown
-                                className={`w-4 h-4 text-gray-500 transition-transform ${mobileDropdown === item.label
-                                  ? "rotate-180"
-                                  : ""
-                                  }`}
-                              />
-                            </button>
-                          )}
-                        </div>
-                        {item.children && mobileDropdown === item.label && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            className="pl-4 border-l-2 border-teal-200 ml-2"
-                          >
-                            {item.children.map((child) => (
-                              <a
-                                key={child.label}
-                                href={child.href}
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handleNavClick(child.href);
-                                }}
-                                className="flex items-center gap-2 py-2 px-3 text-gray-500 hover:text-teal-600 text-sm transition-colors"
-                              >
-                                <ChevronRight className="w-3 h-3" />
-                                {child.label}
-                              </a>
-                            ))}
-                          </motion.div>
-                        )}
-                      </div>
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleNavClick(item.href);
+                        }}
+                        className={`block py-3 px-2 font-medium transition-colors text-sm ${getIsActive(item.href)
+                          ? "text-teal-600 bg-teal-50 rounded-lg"
+                          : "text-gray-700 hover:text-teal-600"
+                          }`}
+                      >
+                        {item.label}
+                      </a>
                     ))}
                     <div className="pt-4">
                       <Button

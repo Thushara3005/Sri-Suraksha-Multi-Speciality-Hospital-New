@@ -7,11 +7,18 @@ import {
   Clock,
   Heart,
 } from "lucide-react";
+import { DEPARTMENTS } from "@/lib/constants";
+
+const departmentQuickLinks = [
+  { label: DEPARTMENTS[0], href: "#services" },
+  { label: DEPARTMENTS[1], href: "#services" },
+  { label: "Diagnostics Laboratory", href: "#services" },
+  { label: DEPARTMENTS[2], href: "#services" },
+  { label: DEPARTMENTS[3], href: "#services" },
+];
 
 const quickLinks = [
-  { label: "General Medicine", href: "#services" },
-  { label: "Gynecology", href: "#services" },
-  { label: "Diagnostics Laboratory", href: "#services" },
+  ...departmentQuickLinks,
   { label: "FAQs", href: "#faq" },
   { label: "Gallery", href: "#gallery" },
   { label: "About Us", href: "#about" },
@@ -59,7 +66,7 @@ export default function Footer() {
             <h3 className="text-white font-semibold text-sm sm:text-lg mb-3 sm:mb-6 font-[family-name:var(--font-inter)]">
               Quick Links
             </h3>
-            <ul className="space-y-2 sm:space-y-3">
+            <ul className="max-h-52 space-y-2 overflow-y-auto pr-1 sm:max-h-none sm:space-y-3 sm:overflow-visible sm:pr-0">
               {quickLinks.map((link) => (
                 <li key={link.label}>
                   <a
