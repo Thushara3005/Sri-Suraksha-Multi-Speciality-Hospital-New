@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
@@ -37,6 +38,11 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState("home");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,6 +93,33 @@ export default function Navbar() {
     setMobileDropdown(null);
   }, []);
 
+  const scrollToSectionMobile = useCallback((href: string) => {
+    if (!href.startsWith("#")) return;
+
+    document.body.style.overflow = "";
+
+    const sectionId = href.replace("#", "");
+
+    if (sectionId === "home") {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      return;
+    }
+
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+
+    const offset = 80;
+    requestAnimationFrame(() => {
+      const top = Math.max(
+        0,
+        el.getBoundingClientRect().top + window.scrollY - offset
+      );
+      window.scrollTo({ top, left: 0, behavior: "auto" });
+    });
+  }, []);
+
   const handleBookAppointment = useCallback(() => {
     closeMobile();
     router.push("/bookAppointment");
@@ -94,33 +127,52 @@ export default function Navbar() {
 
   const handleNavClick = useCallback(
     (href: string) => {
-      const shouldDelay = isMobileOpen;
-      closeMobile();
+      const isMobile =
+        typeof window !== "undefined" &&
+        window.matchMedia("(max-width: 1023px)").matches;
+      const shouldDelay = isMobile && isMobileOpen;
 
-      const navigate = () => {
+      if (shouldDelay) {
+        closeMobile();
+        window.setTimeout(() => {
+          if (!href.startsWith("#")) {
+            if (href === "/bookAppointment") {
+              router.push(href);
+            }
+            return;
+          }
+          scrollToSectionMobile(href);
+        }, 320);
+        return;
+      }
+
+      if (isMobile) {
         if (!href.startsWith("#")) {
           if (href === "/bookAppointment") {
             router.push(href);
           }
           return;
         }
+        scrollToSectionMobile(href);
+        return;
+      }
 
-        const sectionId = href.replace("#", "");
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const offset = 80;
-          const top = el.getBoundingClientRect().top + window.scrollY - offset;
-          window.scrollTo({ top, behavior: "smooth" });
+      if (!href.startsWith("#")) {
+        if (href === "/bookAppointment") {
+          router.push(href);
         }
-      };
+        return;
+      }
 
-      if (shouldDelay) {
-        window.setTimeout(navigate, 320);
-      } else {
-        navigate();
+      const sectionId = href.replace("#", "");
+      const el = document.getElementById(sectionId);
+      if (el) {
+        const offset = 80;
+        const top = el.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: "smooth" });
       }
     },
-    [closeMobile, isMobileOpen, router]
+    [closeMobile, isMobileOpen, router, scrollToSectionMobile]
   );
 
   const getIsActive = (href: string) => {
@@ -161,7 +213,7 @@ export default function Navbar() {
 
       {/* Main Navbar */}
       <motion.nav
-        className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled
+        className={`fixed left-0 right-0 top-0 z-50 w-full transition-all duration-300 lg:sticky ${isScrolled
           ? "bg-white/95 backdrop-blur-md shadow-lg"
           : "bg-white shadow-sm"
           }`}
@@ -280,90 +332,97 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMobileOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
-            >
-              <div className="px-4 py-4 space-y-1 max-h-[70vh] overflow-y-auto">
-                {navItems.map((item) => (
-                  <div key={item.label}>
-                    <div className="flex items-center justify-between">
-                      <a
-                        href={item.href}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleNavClick(item.href);
-                        }}
-                        className={`flex-1 py-3 px-2 font-medium transition-colors text-sm ${getIsActive(item.href)
-                          ? "text-teal-600 bg-teal-50 rounded-lg"
-                          : "text-gray-700 hover:text-teal-600"
-                          }`}
-                      >
-                        {item.label}
-                      </a>
-                      {item.children && (
-                        <button
-                          onClick={() =>
-                            setMobileDropdown(
-                              mobileDropdown === item.label
-                                ? null
-                                : item.label
-                            )
-                          }
-                          className="p-2 hover:bg-gray-100 rounded-lg"
-                        >
-                          <ChevronDown
-                            className={`w-4 h-4 text-gray-500 transition-transform ${mobileDropdown === item.label
-                              ? "rotate-180"
-                              : ""
-                              }`}
-                          />
-                        </button>
-                      )}
-                    </div>
-                    {item.children && mobileDropdown === item.label && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        className="pl-4 border-l-2 border-teal-200 ml-2"
-                      >
-                        {item.children.map((child) => (
+        {/* Mobile menu rendered in portal — fixed to viewport, not scroll position */}
+        {isMounted &&
+          createPortal(
+            <AnimatePresence>
+              {isMobileOpen && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="fixed inset-x-0 top-16 z-[60] overflow-hidden border-t border-gray-100 bg-white sm:top-[4.5rem] lg:hidden"
+                >
+                  <div className="max-h-[calc(100vh-4rem)] space-y-1 overflow-y-auto px-4 py-4 sm:max-h-[calc(100vh-4.5rem)]">
+                    {navItems.map((item) => (
+                      <div key={item.label}>
+                        <div className="flex items-center justify-between">
                           <a
-                            key={child.label}
-                            href={child.href}
+                            href={item.href}
                             onClick={(e) => {
                               e.preventDefault();
-                              handleNavClick(child.href);
+                              handleNavClick(item.href);
                             }}
-                            className="flex items-center gap-2 py-2 px-3 text-gray-500 hover:text-teal-600 text-sm transition-colors"
+                            className={`flex-1 py-3 px-2 font-medium transition-colors text-sm ${getIsActive(item.href)
+                              ? "text-teal-600 bg-teal-50 rounded-lg"
+                              : "text-gray-700 hover:text-teal-600"
+                              }`}
                           >
-                            <ChevronRight className="w-3 h-3" />
-                            {child.label}
+                            {item.label}
                           </a>
-                        ))}
-                      </motion.div>
-                    )}
+                          {item.children && (
+                            <button
+                              onClick={() =>
+                                setMobileDropdown(
+                                  mobileDropdown === item.label
+                                    ? null
+                                    : item.label
+                                )
+                              }
+                              className="p-2 hover:bg-gray-100 rounded-lg"
+                            >
+                              <ChevronDown
+                                className={`w-4 h-4 text-gray-500 transition-transform ${mobileDropdown === item.label
+                                  ? "rotate-180"
+                                  : ""
+                                  }`}
+                              />
+                            </button>
+                          )}
+                        </div>
+                        {item.children && mobileDropdown === item.label && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            className="pl-4 border-l-2 border-teal-200 ml-2"
+                          >
+                            {item.children.map((child) => (
+                              <a
+                                key={child.label}
+                                href={child.href}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleNavClick(child.href);
+                                }}
+                                className="flex items-center gap-2 py-2 px-3 text-gray-500 hover:text-teal-600 text-sm transition-colors"
+                              >
+                                <ChevronRight className="w-3 h-3" />
+                                {child.label}
+                              </a>
+                            ))}
+                          </motion.div>
+                        )}
+                      </div>
+                    ))}
+                    <div className="pt-4">
+                      <Button
+                        onClick={handleBookAppointment}
+                        className="w-full bg-teal-600 hover:bg-teal-700 text-white rounded-full py-3 shadow-lg text-sm"
+                      >
+                        Book Appointment
+                      </Button>
+                    </div>
                   </div>
-                ))}
-                <div className="pt-4">
-                  <Button
-                    onClick={handleBookAppointment}
-                    className="w-full bg-teal-600 hover:bg-teal-700 text-white rounded-full py-3 shadow-lg text-sm"
-                  >
-                    Book Appointment
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>,
+            document.body
           )}
-        </AnimatePresence>
       </motion.nav>
+
+      {/* Reserve space for fixed mobile navbar */}
+      <div className="h-16 shrink-0 sm:h-[4.5rem] lg:hidden" aria-hidden="true" />
     </>
   );
 }
